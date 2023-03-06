@@ -1,5 +1,6 @@
 import { Appointment } from "@src/modules/appointment/domain/appointment";
 import { AppointmentRepository } from "@src/infra/db/repositories/appointment-repository";
+import { UseCase } from "@core/domain/use-case";
 
 interface CreateAppointmentRequest {
     customer: string;
@@ -9,7 +10,7 @@ interface CreateAppointmentRequest {
 
 type CreateAppointmentResponse = Appointment
 
-export class CreateAppointmentUseCase {
+export class CreateAppointmentUseCase implements UseCase<CreateAppointmentRequest, CreateAppointmentResponse> {
 
     constructor(
         private AppointmentRepository: AppointmentRepository

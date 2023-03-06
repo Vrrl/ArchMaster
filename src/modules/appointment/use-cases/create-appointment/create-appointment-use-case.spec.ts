@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Appointment } from "@src/modules/appointment/domain/appointment";
+import { Appointment } from "../../domain/appointment";
 import { InMemoryAppointmentRepository } from "@src/infra/db/repositories/in-memory/in-memory-appointment-repository";
 import { CreateAppointmentUseCase } from "./create-appointment-use-case";
 
