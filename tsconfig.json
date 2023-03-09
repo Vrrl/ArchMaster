@@ -39,7 +39,7 @@
   "include": [
     "./src/**/*.ts",
     "./test/**/*.ts"
-  ],
+, "testing/testing.ts", "testing/testing.ts"  ],
   "exclude": [
     "./node_modules/*",
     "./dist"

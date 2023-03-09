@@ -4,7 +4,7 @@ import { InMemoryAppointmentRepository } from "@src/infra/db/repositories/in-mem
 
 
 describe("Create challenge", () => {
-  it("should delete a challenge", () => {
+  it("should delete a challenge", async () => {
       // const inMemoryAppointmentRepository = new InMemoryAppointmentRepository()
       // const sut = new CreateChallengeUseCase(inMemoryAppointmentRepository)
       

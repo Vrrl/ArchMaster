@@ -5,7 +5,7 @@ import { CreateChallengeUseCase } from "./create-challenge-use-case";
 
 
 describe("Create challenge", () => {
-  it("should create a challenge", () => {
+  it("should create a challenge", async () => {
       const inMemoryChallengeRepository = new InMemoryChallengeRepository()
       const sut = new CreateChallengeUseCase(inMemoryChallengeRepository)
       
@@ -14,7 +14,7 @@ describe("Create challenge", () => {
       const description = "This is a new test challenge"
       const tags = ["new","test","architecture"]
 
-      expect(sut.execute({
+      await expect(sut.execute({
         title: title,
         description: description,
         tags: tags,

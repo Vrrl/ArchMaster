@@ -1,42 +1,49 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
 import { InMemoryChallengeRepository } from "@src/infra/db/repositories/in-memory/in-memory-challenge-repository";
 import { DisableChallengeUseCase } from "./disable-challenge-use-case";
 import { Tag } from "../../domain/tag";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
+import { MockProxy, mock, mockDeep } from 'vitest-mock-extended';
+import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 
 
 describe("Disable challenge", () => {
-  it("should disable a challenge", () => {
-    const inMemoryChallengeRepository = new InMemoryChallengeRepository()
-    const sut = new DisableChallengeUseCase(inMemoryChallengeRepository)
+  let mockChallengeRepository: MockProxy<ChallengeRepository>
 
-    const creatorId = "UUID-FAKE-FOR-TEST"
-    
-    const titleOrError = new ChallengeTitle({title: "Some title"})
-    const descriptionOrError = new ChallengeDescription({description: "some description"})
-    const tagsOrError = [new Tag({name: "tag name"}), new Tag({name: "another"})]
+  beforeEach(() => {
+    mockChallengeRepository = mock<ChallengeRepository>()
+  })
+
+
+  it("should disable a challenge", async () => {
+
+    const sut = new DisableChallengeUseCase(mockChallengeRepository)
 
     const challenge = new Challenge({
-      title: titleOrError,
-      description: descriptionOrError,
-      tags: tagsOrError,
-      creatorId: creatorId,
+      title: new ChallengeTitle({title: "Some title"}),
+      description: new ChallengeDescription({description: "some description"}),
+      tags: [new Tag({name: "tag name"}), new Tag({name: "another"})],
+      creatorId: "UUID-FAKE-FOR-TEST",
       verified: false,
       createdAt: new Date(),
     })
 
-    // TODO: probably this is not the best way to test. learn more about mocking
-    inMemoryChallengeRepository.create(Object.create(challenge))
+    mockChallengeRepository.getById.calledWith(challenge.id).mockResolvedValueOnce(challenge)
+    mockChallengeRepository.update.mockResolvedValueOnce()
 
-    expect(sut.execute({
+    await expect(sut.execute({
       id: challenge.id,
-      userId: creatorId,
-    })).resolves
+      userId: challenge.props.creatorId,
+    })).resolves.toBeUndefined()
 
-    const res = inMemoryChallengeRepository.items.find(i => i.id === challenge.id) as Challenge
+    expect(mockChallengeRepository.update).toBeCalledTimes(1)
+    expect(mockChallengeRepository.update).toBeCalledWith(challenge)
+    expect(mockChallengeRepository.getById).toBeCalledTimes(1)
+    expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)
+    expect(challenge.props.disabledAt).toBeTruthy()
 
-    expect(typeof res.props.disabledAt).toBe(typeof Date)
   })
+
 })

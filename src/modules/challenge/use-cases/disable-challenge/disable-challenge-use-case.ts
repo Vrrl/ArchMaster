@@ -17,12 +17,11 @@ export class DisableChallengeUseCase implements UseCase<DisableChallengeRequest,
   async execute({ id, userId }: DisableChallengeRequest): Promise<void> {
 
     const challenge = await this.challengeRepository.getById(id)
-    if (!challenge)
-    throw new Error("challenge not found")
+    if (!challenge) throw new Error("challenge not found")
     
     challenge.disable()
-
-    this.challengeRepository.update(challenge)
+    
+    await this.challengeRepository.update(challenge)
     
   }
 }
