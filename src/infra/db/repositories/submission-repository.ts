@@ -1,6 +1,6 @@
 import { Submission } from "@src/modules/challenge/domain/submission";
 
-export interface SubmissionRepository{
+export interface ISubmissionRepository{
     create(submission: Submission): Promise<void>;
     getById(id: string): Promise<Submission | null>;
     update(submission: Submission): Promise<void>;

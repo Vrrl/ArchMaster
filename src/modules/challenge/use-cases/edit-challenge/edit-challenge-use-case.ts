@@ -1,5 +1,5 @@
-import { UseCase } from "@src/core/domain/use-case"
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IUseCase } from "@src/core/domain/use-case"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
 import { ChallengeDescription } from "../../domain/challenge-description"
 import { ChallengeTitle } from "../../domain/challenge-title"
 import { Tag } from "../../domain/tag"
@@ -13,9 +13,9 @@ interface EditChallengeRequest {
 
 type EditChallengeResponse = void
 
-export class EditChallengeUseCase implements UseCase<EditChallengeRequest, EditChallengeResponse> {
+export class EditChallengeUseCase implements IUseCase<EditChallengeRequest, EditChallengeResponse> {
   constructor(
-    private challengeRepository: ChallengeRepository
+    private challengeRepository: IChallengeRepository
   ) { }
 
   async execute({ id,title,description,tags }: EditChallengeRequest): Promise<void> {

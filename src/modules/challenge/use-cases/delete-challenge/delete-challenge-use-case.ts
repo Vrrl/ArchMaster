@@ -1,5 +1,5 @@
-import { UseCase } from "@src/core/domain/use-case";
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { IUseCase } from "@src/core/domain/use-case";
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 
 interface DeleteChallengeRequest {
   id: string,
@@ -8,9 +8,9 @@ interface DeleteChallengeRequest {
 
 type DeleteChallengeResponse = void
 
-export class DeleteChallengeUseCase implements UseCase<DeleteChallengeRequest, DeleteChallengeResponse>{
+export class DeleteChallengeUseCase implements IUseCase<DeleteChallengeRequest, DeleteChallengeResponse>{
   constructor(
-    private challengeRepository: ChallengeRepository
+    private challengeRepository: IChallengeRepository
   ) { }
 
   async execute({ id, userId }: DeleteChallengeRequest): Promise<void> {

@@ -6,14 +6,14 @@ import { Tag } from "../../domain/tag";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { MockProxy, mock, mockDeep } from 'vitest-mock-extended';
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 
 
 describe("Disable challenge", () => {
-  let mockChallengeRepository: MockProxy<ChallengeRepository>
+  let mockChallengeRepository: MockProxy<IChallengeRepository>
 
   beforeEach(() => {
-    mockChallengeRepository = mock<ChallengeRepository>()
+    mockChallengeRepository = mock<IChallengeRepository>()
   })
 
 

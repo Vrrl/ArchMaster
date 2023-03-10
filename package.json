@@ -6,7 +6,8 @@
   "scripts": {
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "dev": "ts-node-dev -r tsconfig-paths/register src/infra/http/app.ts"
+    "dev": "ts-node-dev -r tsconfig-paths/register src/infra/http/app.ts",
+    "migrate": "node-pg-migrate"
   },
   "keywords": [],
   "author": "",
@@ -22,15 +23,21 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "prisma": "^4.11.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.1.2",
     "typescript": "^4.9.5",
-      "vitest": "^0.29.2",
-      "vitest-mock-extended": "^1.0.10"
+    "vitest": "^0.29.2",
+    "vitest-mock-extended": "^1.0.10"
   },
   "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "@types/pg": "^8.6.6",
     "express": "^4.18.2",
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.10.0",
+    "postgres-migrations": "^5.3.0",
     "simple-body-validator": "^1.2.12",
     "uuid": "^9.0.0",
     "zod": "^3.21.0"

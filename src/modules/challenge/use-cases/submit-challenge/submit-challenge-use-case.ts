@@ -1,6 +1,6 @@
-import { UseCase } from "@src/core/domain/use-case"
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
-import { SubmissionRepository } from "@src/infra/db/repositories/submission-repository"
+import { IUseCase } from "@src/core/domain/use-case"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Submission } from "../../domain/submission"
 
 interface SubmitChallengeRequest {
@@ -11,10 +11,10 @@ interface SubmitChallengeRequest {
 
 type SubmitChallengeResponse = void
 
-export class SubmitChallengeUseCase implements UseCase<SubmitChallengeRequest, SubmitChallengeResponse> {
+export class SubmitChallengeUseCase implements IUseCase<SubmitChallengeRequest, SubmitChallengeResponse> {
   constructor(
-    private challengeRepository: ChallengeRepository,
-    private submissionRepository: SubmissionRepository,
+    private challengeRepository: IChallengeRepository,
+    private submissionRepository: ISubmissionRepository,
   ) { }
 
   async execute({ userId,challengeId,repositoryLink }: SubmitChallengeRequest): Promise<void> {

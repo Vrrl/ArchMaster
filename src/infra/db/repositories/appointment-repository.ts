@@ -1,5 +1,5 @@
 import { Appointment } from "../../appointment/domain/appointment";
 
-export interface AppointmentRepository{
+export interface IAppointmentRepository{
     create(appointment: Appointment): Promise<void>;
 }

@@ -3,6 +3,6 @@
 * @desc 
 * UseCase interface
 */
-export interface UseCase<IRequest, IResponse> {
+export interface IUseCase<IRequest, IResponse> {
   execute (request?: IRequest) : Promise<IResponse> | IResponse;
 }

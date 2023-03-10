@@ -1,5 +1,5 @@
-import { UseCase } from "@src/core/domain/use-case";
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { IUseCase } from "@src/core/domain/use-case";
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 import { Challenge } from "../../domain/challenge";
 
 interface DisableChallengeRequest {
@@ -9,9 +9,9 @@ interface DisableChallengeRequest {
 
 type DisableChallengeResponse = void
 
-export class DisableChallengeUseCase implements UseCase<DisableChallengeRequest,DisableChallengeResponse> {
+export class DisableChallengeUseCase implements IUseCase<DisableChallengeRequest,DisableChallengeResponse> {
   constructor(
-    private challengeRepository: ChallengeRepository
+    private challengeRepository: IChallengeRepository
   ) { }
 
   async execute({ id, userId }: DisableChallengeRequest): Promise<void> {

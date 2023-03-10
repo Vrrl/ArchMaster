@@ -1,17 +1,17 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
 import { MockProxy, mock, mockDeep } from 'vitest-mock-extended';
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { EditChallengeUseCase } from "./edit-challenge-use-case";
 import { Tag } from "../../domain/tag";
 
 describe("Edit challenge", () => {
-  let mockChallengeRepository: MockProxy<ChallengeRepository>
+  let mockChallengeRepository: MockProxy<IChallengeRepository>
 
   beforeEach(() => {
-    mockChallengeRepository = mock<ChallengeRepository>()
+    mockChallengeRepository = mock<IChallengeRepository>()
   })
 
 

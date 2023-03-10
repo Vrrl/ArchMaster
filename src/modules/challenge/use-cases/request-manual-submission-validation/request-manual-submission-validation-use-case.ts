@@ -1,7 +1,7 @@
-import { UseCase } from "@src/core/domain/use-case"
-import { AvaliationRepository } from "@src/infra/db/repositories/avaliation-repository"
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
-import { SubmissionRepository } from "@src/infra/db/repositories/submission-repository"
+import { IUseCase } from "@src/core/domain/use-case"
+import { IAvaliationRepository } from "@src/infra/db/repositories/avaliation-repository"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Avaliation } from "../../domain/avaliation"
 import { AvaliationTypes } from "../../domain/avaliation-types"
 
@@ -13,11 +13,11 @@ interface RequestSubmissionManualValidationRequest {
 
 type RequestSubmissionManualValidationResponse = void
 
-export class RequestSubmissionManualValidationUseCase implements UseCase<RequestSubmissionManualValidationRequest,RequestSubmissionManualValidationResponse> {
+export class RequestSubmissionManualValidationUseCase implements IUseCase<RequestSubmissionManualValidationRequest,RequestSubmissionManualValidationResponse> {
   constructor(
-    private challengeRepository: ChallengeRepository,
-    private submissionRepository: SubmissionRepository,
-    private avaliationRepository: AvaliationRepository
+    private challengeRepository: IChallengeRepository,
+    private submissionRepository: ISubmissionRepository,
+    private avaliationRepository: IAvaliationRepository
   ) { }
 
   async execute({ id,userId,submissionId }: RequestSubmissionManualValidationRequest): Promise<void> {

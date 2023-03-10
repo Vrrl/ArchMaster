@@ -1,5 +1,5 @@
-import { UseCase } from "@src/core/domain/use-case"
-import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IUseCase } from "@src/core/domain/use-case"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
 import { Challenge } from "../../domain/challenge"
 import { ChallengeDescription } from "../../domain/challenge-description"
 import { ChallengeTitle } from "../../domain/challenge-title"
@@ -14,9 +14,9 @@ interface CreateChallengeRequest{
 
 type CreateChallengeResponse = object
 
-export class CreateChallengeUseCase implements UseCase<CreateChallengeRequest, CreateChallengeResponse>{
+export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse>{
   constructor(
-    private ChallengeRepository: ChallengeRepository
+    private ChallengeRepository: IChallengeRepository
   ){}
 
   async execute({title,description,tags,creatorId}: CreateChallengeRequest): Promise<CreateChallengeResponse> {
