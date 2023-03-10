@@ -7,7 +7,7 @@ import { ChallengeTitle } from "../../domain/challenge-title";
 import { EditChallengeUseCase } from "./edit-challenge-use-case";
 import { Tag } from "../../domain/tag";
 
-describe("Create challenge", () => {
+describe("Edit challenge", () => {
   let mockChallengeRepository: MockProxy<ChallengeRepository>
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("Create challenge", () => {
   })
 
 
-  it("should delete a challenge", async () => {
+  it("should Edit a challenge", async () => {
     const sut = new EditChallengeUseCase(mockChallengeRepository)
 
     const challenge = new Challenge({
@@ -28,17 +28,24 @@ describe("Create challenge", () => {
     })
 
     mockChallengeRepository.getById.calledWith(challenge.id).mockResolvedValueOnce(challenge)
-    mockChallengeRepository.update.mockResolvedValueOnce()
+
+    const newTitle = "New Title"
+    const newDescription = "New Description"
+    const newTags = ["new", "description", "tags"]
 
     await expect(sut.execute({
       id: challenge.id,
-      userId: challenge.props.creatorId,
+      title: newTitle,
+      description: newDescription,
+      tags: newTags,
     })).resolves.toBeUndefined()
 
-    expect(mockChallengeRepository.update).toBeCalledTimes(1)
-    expect(mockChallengeRepository.update).toBeCalledWith(challenge)
     expect(mockChallengeRepository.getById).toBeCalledTimes(1)
     expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)
-    expect(challenge.props.disabledAt).toBeTruthy()
+    expect(mockChallengeRepository.update).toBeCalledTimes(1)
+    expect(mockChallengeRepository.update).toBeCalledWith(challenge)
+    expect(challenge.props.title.title).toBe(newTitle)
+    expect(challenge.props.description.description).toBe(newDescription)
+    expect(challenge.props.tags.map(tag => tag.name)).toStrictEqual(newTags)
   })
 })

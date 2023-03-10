@@ -7,7 +7,7 @@ interface DisableChallengeRequest {
   userId: string,
 }
 
-type DisableChallengeResponse = object
+type DisableChallengeResponse = void
 
 export class DisableChallengeUseCase implements UseCase<DisableChallengeRequest,DisableChallengeResponse> {
   constructor(

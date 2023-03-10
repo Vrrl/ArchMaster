@@ -31,7 +31,6 @@ describe("Disable challenge", () => {
     })
 
     mockChallengeRepository.getById.calledWith(challenge.id).mockResolvedValueOnce(challenge)
-    mockChallengeRepository.update.mockResolvedValueOnce()
 
     await expect(sut.execute({
       id: challenge.id,

@@ -1,3 +1,4 @@
+import { UseCase } from "@src/core/domain/use-case";
 import { ChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 
 interface DeleteChallengeRequest {
@@ -5,16 +6,21 @@ interface DeleteChallengeRequest {
   userId: string,
 }
 
-type DeleteChallengeResponse = object
+type DeleteChallengeResponse = void
 
-export class DeleteChallengeUseCase {
+export class DeleteChallengeUseCase implements UseCase<DeleteChallengeRequest, DeleteChallengeResponse>{
   constructor(
-    private ChallengeRepository: ChallengeRepository
+    private challengeRepository: ChallengeRepository
   ) { }
 
-  async execute({ id, userId }: DeleteChallengeRequest): Promise<DeleteChallengeResponse> {
+  async execute({ id, userId }: DeleteChallengeRequest): Promise<void> {
 
-    this.ChallengeRepository.delete()
+    const challenge = await this.challengeRepository.getById(id)
+    if (!challenge) throw new Error("challenge not found")
+    
+    challenge.deactivate()
+    
+    await this.challengeRepository.update(challenge)
 
   }
 }

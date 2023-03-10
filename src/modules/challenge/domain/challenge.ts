@@ -1,6 +1,6 @@
 import { AggregateRoot } from "@src/core/domain/aggregate-root"
 import { Tag } from "./tag"
-import { ChallengeSubmission } from "./challenge-submission"
+import { ChallengeSubmission } from "./submission"
 import { ChallengeTitle } from "./challenge-title"
 import { ChallengeDescription } from "./challenge-description"
 
@@ -18,6 +18,14 @@ export interface ChallengeProps {
 } 
 
 export class Challenge extends AggregateRoot<ChallengeProps>{
+
+  editInformations(title: ChallengeTitle, description: ChallengeDescription, tags: Tag[]): void{
+    // add domain event
+    this.props.title = title
+    this.props.description = description
+    this.props.tags = tags
+    this.props.editedAt = new Date()
+  }
 
   disable(): void {
     this.props.disabledAt = new Date()

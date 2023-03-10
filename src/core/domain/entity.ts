@@ -23,6 +23,10 @@ export abstract class Entity<T> {
     this.props = props;
   }
 
+  get id (): string {
+    return this._id;
+  }
+
   public equals (object?: Entity<T>) : boolean {
     // TODO: made tests
     if (object == null || object == undefined) {

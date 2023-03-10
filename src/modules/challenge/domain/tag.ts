@@ -6,5 +6,7 @@ export interface TagProps{
 }
 
 export class Tag extends ValueObject<TagProps>{
-
+  get name(): string{
+    return this.props.name
+  }
 }

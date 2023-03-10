@@ -6,5 +6,7 @@ export interface ChallengeDescriptionProps{
 }
 
 export class ChallengeDescription extends ValueObject<ChallengeDescriptionProps>{
-
+  get description(): string{
+    return this.props.description;
+  }
 }
