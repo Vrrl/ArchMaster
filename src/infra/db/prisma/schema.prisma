@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  @@map("users")
+
+  id          String       @id
+  email       String       @unique
+  name        String?
+  challenges  Challenge[]
+  submissions Submission[]
+  avaliations Avaliation[]
+}
+
+// model Tag {
+//   id   String @id
+//   name String
+
+//   challenge   Challenge @relation(fields: [challengeId], references: [id])
+//   challengeId String
+// }
+
+model Challenge {
+  @@map("challenges")
+
+  id            String    @id
+  title         String
+  description   String
+  tags          String[]
+  verified      Boolean   @default(false)
+  createdAt     DateTime
+  editedAt      DateTime?
+  deactivatedAt DateTime?
+  disabledAt    DateTime?
+
+  submissions Submission[]
+
+  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId String
+}
+
+model Submission {
+  @@map("submissions")
+
+  id             String    @id
+  repositoryLink String
+  description    String
+  createdAt      DateTime
+  editedAt       DateTime?
+  deactivatedAt  DateTime?
+
+  avaliations Avaliation[]
+
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId String
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+}
+
+model Avaliation {
+  @@map("avaliations")
+
+  id   String @id
+  type String
+
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  submissionId String
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String
+}

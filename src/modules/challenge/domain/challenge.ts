@@ -1,6 +1,6 @@
 import { AggregateRoot } from "@src/core/domain/aggregate-root"
 import { Tag } from "./tag"
-import { ChallengeSubmission } from "./submission"
+import { Submission } from "./submission"
 import { ChallengeTitle } from "./challenge-title"
 import { ChallengeDescription } from "./challenge-description"
 
@@ -9,7 +9,7 @@ export interface ChallengeProps {
   title: ChallengeTitle
   description: ChallengeDescription
   verified: boolean
-  submissions?: ChallengeSubmission[]
+  submissions?: Submission[]
   tags: Tag[]
   createdAt: Date
   editedAt?: Date
@@ -26,6 +26,16 @@ export class Challenge extends AggregateRoot<ChallengeProps>{
     this.props.tags = tags
     this.props.editedAt = new Date()
   }
+
+  get title(): ChallengeTitle{ return this.props.title}
+  get description(): ChallengeDescription{ return this.props.description}
+  get tags(): Tag[]{ return this.props.tags}
+  get verified(): boolean{ return this.props.verified}
+  get createdAt(): Date { return this.props.createdAt}
+  get editedAt(): Date | undefined{ return this.props.editedAt}
+  get deactivatedAt(): Date | undefined{ return this.props.deactivatedAt}
+  get disabledAt(): Date | undefined{ return this.props.disabledAt}
+  get creatorId(): string{ return this.props.creatorId}
 
   disable(): void {
     this.props.disabledAt = new Date()

@@ -1,10 +1,10 @@
 import express from 'express'
-import { CreateAppointmentControllerFactory } from './factories/create-appointment-controller-factory'
 import { adaptController } from '@infra/http/adapters/express-adapters';
+import { CreateChallengeControllerFactory } from './use-cases/create-challenge/create-challenge-controller-factory';
 
 
 const router = express.Router()
 
-router.get("/", adaptController(new CreateAppointmentControllerFactory()));
+router.post("/", adaptController(new CreateChallengeControllerFactory()));
 
 export default router

@@ -16,7 +16,7 @@ type CreateChallengeResponse = object
 
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse>{
   constructor(
-    private ChallengeRepository: IChallengeRepository
+    private challengeRepository: IChallengeRepository
   ){}
 
   async execute({title,description,tags,creatorId}: CreateChallengeRequest): Promise<CreateChallengeResponse> {
@@ -25,7 +25,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
     const descriptionOrError = new ChallengeDescription({description})
     let tagsOrError: Tag[] = []
     tags.forEach(tag => {tagsOrError.push(new Tag({name: tag}))})
-
+    
     const challenge = new Challenge({
       title: titleOrError,
       description: descriptionOrError,
@@ -35,7 +35,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       createdAt: new Date(),
     })
 
-    this.ChallengeRepository.create(challenge)
+    await this.challengeRepository.create(challenge)
 
     return challenge
   }

@@ -12,7 +12,7 @@ export class ChallengeTitle extends ValueObject<ChallengeTitleProps>{
     super(ChallengeTitleProps.parse(props));
   }
 
-  get title(): string{
+  getValue(): string{
     return this.props.title;
   }
 }

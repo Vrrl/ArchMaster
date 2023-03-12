@@ -1,14 +1,20 @@
-import { describe, expect, it } from "vitest";
-import { Challenge } from "../../domain/challenge";
-import { InMemoryChallengeRepository } from "@src/infra/db/repositories/in-memory/in-memory-challenge-repository";
 import { CreateChallengeUseCase } from "./create-challenge-use-case";
+import { describe, expect, it, beforeEach } from "vitest";
+import { Challenge } from "../../domain/challenge";
+import { MockProxy, mock } from 'vitest-mock-extended';
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 
 
 describe("Create challenge", () => {
+  let mockChallengeRepository: MockProxy<IChallengeRepository>
+
+  beforeEach(() => {
+    mockChallengeRepository = mock<IChallengeRepository>()
+  })
+
   it("should create a challenge", async () => {
-      const inMemoryChallengeRepository = new InMemoryChallengeRepository()
-      const sut = new CreateChallengeUseCase(inMemoryChallengeRepository)
-      
+      const sut = new CreateChallengeUseCase(mockChallengeRepository)
+
       const creatorId = "UUID-FOR-TEST-15895"
       const title = "New Challenge"
       const description = "This is a new test challenge"
@@ -19,6 +25,8 @@ describe("Create challenge", () => {
         description: description,
         tags: tags,
         creatorId: creatorId
-      })).resolves
+      })).resolves.toBeInstanceOf(Challenge)
+
+      expect(mockChallengeRepository.create).toBeCalledTimes(1)
   })
 })

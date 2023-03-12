@@ -3,7 +3,7 @@ import { ChallengeRepository } from "./challenge-repository";
 
 
 
-test("a", async () => {
+test.skip("a", async () => {
   const challengeRepository = new ChallengeRepository()
 
   await challengeRepository.create()

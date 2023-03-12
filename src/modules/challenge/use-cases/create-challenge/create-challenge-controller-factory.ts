@@ -1,12 +1,12 @@
 import { Controller, ControllerFactory } from "@core/infra/controller"
-import { InMemoryAppointmentRepository } from "@infra/db/repositories/in-memory/in-memory-appointment-repository"
-import { CreateAppointmentController } from "./create-challenge-controller"
-import { CreateAppointmentUseCase } from "./create-appointment-use-case"
+import { ChallengeRepository } from "@src/infra/db/repositories/prisma/challenge-repository"
+import { CreateChallengeController } from "./create-challenge-controller"
+import { CreateChallengeUseCase } from "./create-challenge-use-case"
 
-export class CreateAppointmentControllerFactory extends ControllerFactory{  
+export class CreateChallengeControllerFactory extends ControllerFactory{  
     makeController(): Controller {
-        const AppointmentRepository = new InMemoryAppointmentRepository()
-        const createAppointmentService = new CreateAppointmentUseCase(AppointmentRepository)
-        return new CreateAppointmentController(createAppointmentService)
+        const challengeRepository = new ChallengeRepository()
+        const usecase = new CreateChallengeUseCase(challengeRepository)
+        return new CreateChallengeController(usecase)
     }
 }

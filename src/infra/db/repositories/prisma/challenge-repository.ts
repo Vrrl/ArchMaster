@@ -1,40 +1,70 @@
 import { Challenge } from "@src/modules/challenge/domain/challenge";
 import { IChallengeRepository } from "../challenge-repository";
-import { pool } from "../../config/pg/connection"
 import { PrismaClient } from '@prisma/client'
+import { ChallengeMap } from "./mappers/challenge-map";
+import { prisma } from "@src/infra/db/prisma/client";
 
 export class ChallengeRepository implements IChallengeRepository{
-  private _client: any
 
   constructor(){
-    this._client = new PrismaClient()
   }
 
-  async create(): Promise<void>{
+  async create(challenge: Challenge): Promise<void>{
     try {
-      const user = await this._client.user.create({
-        data: {
-          name: 'Alice',
-          email: 'alicea@prisma.io',
+
+      await prisma.challenge.create({
+        data: ChallengeMap.toPrismaPersistence(challenge),
+      })
+
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }
+
+  async getById(id: string): Promise<Challenge | null>{
+    try {
+
+      const challenge = await prisma.challenge.findUnique({
+        where: {
+          id: id,
         },
       })
-      this._client.$disconnect()
-      console.log(user)
+
+      if(challenge !== null) return ChallengeMap.prismaToDomain(challenge)
+
+    } catch (error) {
+      console.log(error)
+    }
+    return null
+  }
+
+  async update(challenge: Challenge): Promise<void>{
+    try {
+      const res = await prisma.challenge.update({
+        where: {
+          id: challenge.id,
+        },
+        data: ChallengeMap.toPrismaPersistence(challenge),
+      })
 
     } catch (error) {
       console.log(error)
     }
   }
 
-  async getById(id: string): Promise<Challenge | null>{
+  async list(limit?: number, index?: number): Promise<Challenge[]>{
+    try {
 
-  }
+      const res = await prisma.challenge.findMany({
+        skip: index ? index : 0,
+        take: limit,
+      })
 
-  async update(challenge: Challenge): Promise<void>{
-
-  }
-
-  async list(index?: number, limit?: number): Promise<Challenge[]>{
-
+      return res.map(challenge => ChallengeMap.prismaToDomain(challenge))
+    } catch (error) {
+      console.log(error)
+    }
+    return []
   }
 }

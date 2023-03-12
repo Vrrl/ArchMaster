@@ -1,26 +1,31 @@
-import { CreateAppointmentUseCase } from "./create-appointment-use-case";
 import { ok } from "@core/infra/helpers/http";
 import { HttpRequest, HttpResponse } from "@core/infra/http";
 import { Controller } from "@core/infra/controller";
+import { CreateChallengeUseCase } from "./create-challenge-use-case";
+import { z } from "zod";
 
-export class CreateAppointmentController extends Controller {
-  constructor(private readonly createAppointmentUseCase: CreateAppointmentUseCase) { super() }
+export class CreateChallengeController extends Controller {
+  constructor(private readonly createChallengeUseCase: CreateChallengeUseCase) { super() }
 
-  validationRules(): Record<string, string> {
-    return {
-      'body.customer': 'required|string|min:3',
-      'body.startsAt': 'required|date',
-      'body.endsAt': 'required|date|after:body.startsAt',
-    }
+  get requestSchema(): z.AnyZodObject {
+    return z.object({
+      body: z.object({
+        title: z.string().min(3).max(70),
+        description: z.string().max(2000),
+        tags: z.array(z.string().min(2).max(50)),
+        creatorId: z.string(),
+      })
+    });
   }
 
   async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { customer, startsAt, endsAt } = httpRequest.body
+    const { title, description, tags, creatorId } = httpRequest.body
 
-    const res = await this.createAppointmentUseCase.execute({
-      customer,
-      startsAt,
-      endsAt
+    const res = await this.createChallengeUseCase.execute({
+      title,
+      description,
+      tags,
+      creatorId
     })
 
     return ok(res)

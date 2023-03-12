@@ -2,6 +2,7 @@ import { HttpRequest, HttpResponse } from '../../infra/http/interfaces./../../co
 import { badRequest, serverError } from './helpers/http'
 import { make } from 'simple-body-validator';
 import { HttpException } from '@src/core/infra/errors/http';
+import { z } from "zod";
 
 export abstract class ControllerFactory {
   constructor() {}
@@ -14,16 +15,15 @@ export abstract class Controller {
 
   constructor() {}
 
-  abstract validationRules(): Record<string, string>
+  abstract get requestSchema(): z.AnyZodObject
   abstract perform(httpRequest: HttpRequest): Promise<HttpResponse>;
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const validationRules = this.validationRules()
-      if (validationRules) {
-        const validator = make().setData(httpRequest).setRules(validationRules)
+      if (this.requestSchema) {
+        const validator = this.requestSchema.safeParse(httpRequest)
         
-        if (!validator.validate()) return badRequest(validator.errors().all());
+        if (!validator.success) return badRequest(validator.error.issues);
       }
       return await this.perform(httpRequest);
     } catch (error) {

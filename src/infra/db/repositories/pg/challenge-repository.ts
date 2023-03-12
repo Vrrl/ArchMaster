@@ -1,6 +1,6 @@
 import { Challenge } from "@src/modules/challenge/domain/challenge";
 import { IChallengeRepository } from "../challenge-repository";
-import { pool } from "../../config/pg/connection"
+import { pool } from "../../pg/connection"
 
 
 export class ChallengeRepository implements IChallengeRepository{
