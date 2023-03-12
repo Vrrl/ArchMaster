@@ -21,7 +21,7 @@ export abstract class Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       if (this.requestSchema) {
-        const validator = this.requestSchema.safeParse(httpRequest)
+        const validator = await this.requestSchema.safeParseAsync(httpRequest)
         
         if (!validator.success) return badRequest(validator.error.issues);
       }

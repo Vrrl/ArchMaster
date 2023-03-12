@@ -1,4 +1,4 @@
-import { IUseCase } from "@src/core/domain/use-case"
+import { IUseCase } from "@src/core/use-case"
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
 import { ChallengeDescription } from "../../domain/challenge-description"
 import { ChallengeTitle } from "../../domain/challenge-title"

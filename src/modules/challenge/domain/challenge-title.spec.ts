@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Challenge } from "./challenge";
-import { ChallengeDescription } from "./challenge-description";
 import { ChallengeTitle } from "./challenge-title";
-import { Tag } from "./tag";
 
 
 describe("Challenge Title Object", () => {

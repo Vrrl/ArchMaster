@@ -24,7 +24,7 @@ export class ChallengeMap implements IMapper<Challenge>{
     return challengeOrError
   }
 
-  public static toPrismaPersistence(challenge: Challenge): any{
+  public static toPersistence(challenge: Challenge): any{
     return {
       id: challenge.id,
       title: challenge.title.getValue(),

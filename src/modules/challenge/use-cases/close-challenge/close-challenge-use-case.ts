@@ -1,4 +1,4 @@
-import { UseCase } from "@src/core/domain/use-case"
+import { UseCase } from "@src/core/use-case"
 
 interface CloseChallengeRequest{
   id: string

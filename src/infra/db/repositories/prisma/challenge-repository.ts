@@ -13,7 +13,7 @@ export class ChallengeRepository implements IChallengeRepository{
     try {
 
       await prisma.challenge.create({
-        data: ChallengeMap.toPrismaPersistence(challenge),
+        data: ChallengeMap.toPersistence(challenge),
       })
 
     } catch (error) {
@@ -45,7 +45,7 @@ export class ChallengeRepository implements IChallengeRepository{
         where: {
           id: challenge.id,
         },
-        data: ChallengeMap.toPrismaPersistence(challenge),
+        data: ChallengeMap.toPersistence(challenge),
       })
 
     } catch (error) {
