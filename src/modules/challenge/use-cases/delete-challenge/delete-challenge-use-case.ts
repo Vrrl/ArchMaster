@@ -1,5 +1,7 @@
+import { left, Result } from "@src/core/either";
 import { IUseCase } from "@src/core/use-case";
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { DeleteChallengeErrors } from "./delete-challenge-errors";
 
 interface DeleteChallengeRequest {
   id: string,
@@ -16,7 +18,7 @@ export class DeleteChallengeUseCase implements IUseCase<DeleteChallengeRequest, 
   async execute({ id, userId }: DeleteChallengeRequest): Promise<void> {
 
     const challenge = await this.challengeRepository.getById(id)
-    if (!challenge) throw new Error("challenge not found")
+    if (!challenge) return Result.fail(new DeleteChallengeErrors.ChallengeNotFoundError())
     
     challenge.deactivate()
     

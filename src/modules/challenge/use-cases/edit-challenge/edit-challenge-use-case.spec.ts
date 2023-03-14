@@ -6,6 +6,7 @@ import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { EditChallengeUseCase } from "./edit-challenge-use-case";
 import { Tag } from "../../domain/tag";
+import { Result } from "@src/core/either";
 
 describe("Edit challenge", () => {
   let mockChallengeRepository: MockProxy<IChallengeRepository>
@@ -21,7 +22,7 @@ describe("Edit challenge", () => {
     const challenge = new Challenge({
       title: new ChallengeTitle({title: "Some title"}),
       description: new ChallengeDescription({description: "some description"}),
-      tags: [new Tag({name: "tag name"}), new Tag({name: "another"})],
+      tags: [Tag.create({name: "tag name"}).getValue(), Tag.create({name: "name"}).getValue()],
       creatorId: "UUID-FAKE-FOR-TEST",
       verified: false,
       createdAt: new Date(),
@@ -38,7 +39,9 @@ describe("Edit challenge", () => {
       title: newTitle,
       description: newDescription,
       tags: newTags,
-    })).resolves.toBeUndefined()
+    })).resolves.toBeInstanceOf(Result)
+    console.log(challenge.props)
+
 
     expect(mockChallengeRepository.getById).toBeCalledTimes(1)
     expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)
@@ -47,5 +50,34 @@ describe("Edit challenge", () => {
     expect(challenge.props.title.getValue()).toBe(newTitle)
     expect(challenge.props.description.getValue()).toBe(newDescription)
     expect(challenge.props.tags.map(tag => tag.name)).toStrictEqual(newTags)
+  })
+
+  it("should fail for invalid props when Edit a challenge", async () => {
+    const sut = new EditChallengeUseCase(mockChallengeRepository)
+
+    const challenge = new Challenge({
+      title: new ChallengeTitle({title: "Some title"}),
+      description: new ChallengeDescription({description: "some description"}),
+      tags: [new Tag({name: "tag name"}), new Tag({name: "another"})],
+      creatorId: "UUID-FAKE-FOR-TEST",
+      verified: false,
+      createdAt: new Date(),
+    })
+
+    mockChallengeRepository.getById.calledWith(challenge.id).mockResolvedValueOnce(challenge)
+
+    const newTitle = ""
+    const newDescription = ""
+    const newTags = ["", "", ""]
+
+    await expect(sut.execute({
+      id: challenge.id,
+      title: newTitle,
+      description: newDescription,
+      tags: newTags,
+    })).resolves.toHaveProperty("isFailure", true)
+
+    expect(mockChallengeRepository.getById).toBeCalledTimes(1)
+    expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)
   })
 })

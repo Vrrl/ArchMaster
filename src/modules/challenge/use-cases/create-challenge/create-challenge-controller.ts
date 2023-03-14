@@ -21,6 +21,7 @@ export class CreateChallengeController extends Controller {
   async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
     const { title, description, tags, creatorId } = httpRequest.body
 
+
     const res = await this.createChallengeUseCase.execute({
       title,
       description,
