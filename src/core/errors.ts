@@ -1,12 +1,17 @@
-import { UseCaseError } from "@src/core/use-case-error";
+export namespace CoreErrors {
 
-export namespace GenericErrors {
-
-  export class InvalidPropsError extends Result<UseCaseError> {
-    constructor () {
-      super(false, {
-        message: `InvalidPropsError`
-      } as UseCaseError)
+  export class InvalidPropsError extends Error {
+    constructor (message: string) {
+      super(message)
+      Object.setPrototypeOf(this, InvalidPropsError.prototype);
     }
   }
+
+  export class UseCaseError extends Error {
+    constructor (message: string) {
+      super(message)
+      Object.setPrototypeOf(this, InvalidPropsError.prototype);
+    }
+  }
+
 }

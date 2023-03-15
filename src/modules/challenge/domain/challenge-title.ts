@@ -1,5 +1,5 @@
 import { ValueObject } from "@src/core/domain/value-object";
-import { Result } from "@src/core/either";
+import { CoreErrors } from "@src/core/errors";
 import { z } from "zod";
 
 const ChallengeTitleProps = z.object({
@@ -17,12 +17,12 @@ export class ChallengeTitle extends ValueObject<ChallengeTitleProps>{
     return this.props.title;
   }
 
-  public static create(props: ChallengeTitleProps): Result<ChallengeTitle>{
+  public static create(props: ChallengeTitleProps): ChallengeTitle{
     
     const validator = ChallengeTitleProps.safeParse(props)
 
-    if(!validator.success) return Result.fail(validator.error.issues[0].message)
+    if(!validator.success) throw new CoreErrors.InvalidPropsError(validator.error.issues[0].message)
 
-    return Result.ok<ChallengeTitle>(new ChallengeTitle(validator.data)) 
+    return new ChallengeTitle(validator.data)
   }
 }

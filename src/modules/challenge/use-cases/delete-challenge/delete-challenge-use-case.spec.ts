@@ -18,9 +18,9 @@ describe("Delete challenge", () => {
     const sut = new DeleteChallengeUseCase(mockChallengeRepository)
     
     const challenge = new Challenge({
-      title: new ChallengeTitle({title: "Some title"}),
-      description: new ChallengeDescription({description: "some description"}),
-      tags: [new Tag({name: "tag name"}), new Tag({name: "another"})],
+      title: ChallengeTitle.create({title: "Some title"}),
+      description: ChallengeDescription.create({description: "some description"}),
+      tags: [Tag.create({name: "tag name"}), Tag.create({name: "another"})],
       creatorId: "UUID-FAKE-FOR-TEST",
       verified: false,
       createdAt: new Date(),
