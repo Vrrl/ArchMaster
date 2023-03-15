@@ -1,12 +1,12 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
-import { MockProxy, mock, mockDeep } from 'vitest-mock-extended';
+import { MockProxy, mock } from 'vitest-mock-extended';
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { EditChallengeUseCase } from "./edit-challenge-use-case";
 import { Tag } from "../../domain/tag";
-import { Result } from "@src/core/either";
+import { CoreErrors } from "@src/core/errors";
 
 describe("Edit challenge", () => {
   let mockChallengeRepository: MockProxy<IChallengeRepository>
@@ -20,9 +20,9 @@ describe("Edit challenge", () => {
     const sut = new EditChallengeUseCase(mockChallengeRepository)
 
     const challenge = new Challenge({
-      title: new ChallengeTitle({title: "Some title"}),
-      description: new ChallengeDescription({description: "some description"}),
-      tags: [Tag.create({name: "tag name"}).getValue(), Tag.create({name: "name"}).getValue()],
+      title: ChallengeTitle.create({title: "Some title"}),
+      description: ChallengeDescription.create({description: "some description"}),
+      tags: [Tag.create({name: "tag name"}), Tag.create({name: "name"})],
       creatorId: "UUID-FAKE-FOR-TEST",
       verified: false,
       createdAt: new Date(),
@@ -39,9 +39,7 @@ describe("Edit challenge", () => {
       title: newTitle,
       description: newDescription,
       tags: newTags,
-    })).resolves.toBeInstanceOf(Result)
-    console.log(challenge.props)
-
+    })).resolves.toBeUndefined()
 
     expect(mockChallengeRepository.getById).toBeCalledTimes(1)
     expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)
@@ -56,9 +54,9 @@ describe("Edit challenge", () => {
     const sut = new EditChallengeUseCase(mockChallengeRepository)
 
     const challenge = new Challenge({
-      title: new ChallengeTitle({title: "Some title"}),
-      description: new ChallengeDescription({description: "some description"}),
-      tags: [new Tag({name: "tag name"}), new Tag({name: "another"})],
+      title: ChallengeTitle.create({title: "Some title"}),
+      description: ChallengeDescription.create({description: "some description"}),
+      tags: [Tag.create({name: "tag name"}), Tag.create({name: "another"})],
       creatorId: "UUID-FAKE-FOR-TEST",
       verified: false,
       createdAt: new Date(),
@@ -75,7 +73,7 @@ describe("Edit challenge", () => {
       title: newTitle,
       description: newDescription,
       tags: newTags,
-    })).resolves.toHaveProperty("isFailure", true)
+    })).rejects.toThrowError(CoreErrors.InvalidPropsError)  
 
     expect(mockChallengeRepository.getById).toBeCalledTimes(1)
     expect(mockChallengeRepository.getById).toBeCalledWith(challenge.id)

@@ -4,6 +4,7 @@ import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repos
 import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Avaliation } from "../../domain/avaliation"
 import { AvaliationTypes } from "../../domain/avaliation-types"
+import { RequestManualValidationErrors } from "./request-manual-submission-validation-errors"
 
 interface RequestSubmissionManualValidationRequest {
   id: string
@@ -20,15 +21,15 @@ export class RequestSubmissionManualValidationUseCase implements IUseCase<Reques
     private avaliationRepository: IAvaliationRepository
   ) { }
 
-  async execute({ id,userId,submissionId }: RequestSubmissionManualValidationRequest): Promise<void> {
+  async execute({ id,userId,submissionId }: RequestSubmissionManualValidationRequest): Promise<RequestSubmissionManualValidationResponse> {
     const challenge = await this.challengeRepository.getById(id)
-    if (!challenge) throw new Error("challenge not found")
+    if (!challenge) throw new RequestManualValidationErrors.ChallengeNotFoundError(id)
 
     const submission = await this.submissionRepository.getById(submissionId)
-    if (!submission) throw new Error("submission not found")
+    if (!submission) throw new RequestManualValidationErrors.SubmissionNotFoundError(submissionId)
     
-    if(await this.avaliationRepository.list(undefined, undefined, submission.id, AvaliationTypes.MANUAL))
-      throw new Error("Already have an manual submission request pending")
+    const exists = await this.avaliationRepository.list(undefined, undefined, submission.id, AvaliationTypes.MANUAL)
+    if(exists) throw new RequestManualValidationErrors.AlreadyExistAndIsPendingError(exists[0].id)
 
     const newAvaliation = new Avaliation({submissionId: submission.id, type: AvaliationTypes.MANUAL})
 

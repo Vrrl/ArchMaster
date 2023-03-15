@@ -1,12 +1,13 @@
 import { IUseCase } from "@src/core/use-case"
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { Challenge } from "../../domain/challenge"
 
 interface ListAllChallengesRequest{
   index?: number
   limit?: number
 }
 
-type ListAllChallengesResponse = object[]
+type ListAllChallengesResponse = Challenge[]
 
 export class ListAllChallengesUseCase implements IUseCase<ListAllChallengesRequest,ListAllChallengesResponse>{
   constructor(

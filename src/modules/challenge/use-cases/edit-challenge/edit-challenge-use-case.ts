@@ -1,10 +1,10 @@
-import { Either, Result } from "@src/core/either"
-import { GenericErrors } from "@src/core/errors"
+import { CoreErrors } from "@src/core/errors"
 import { IUseCase } from "@src/core/use-case"
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
 import { ChallengeDescription } from "../../domain/challenge-description"
 import { ChallengeTitle } from "../../domain/challenge-title"
 import { Tag } from "../../domain/tag"
+import { EditChallengeErrors } from "./edit-challenge-errors"
 
 interface EditChallengeRequest {
   id: string
@@ -13,7 +13,7 @@ interface EditChallengeRequest {
   tags: string[]
 }
 
-type EditChallengeResponse = Result<void>
+type EditChallengeResponse = void
 
 export class EditChallengeUseCase implements IUseCase<EditChallengeRequest, EditChallengeResponse> {
   constructor(
@@ -22,20 +22,15 @@ export class EditChallengeUseCase implements IUseCase<EditChallengeRequest, Edit
 
   async execute({ id,title,description,tags }: EditChallengeRequest): Promise<EditChallengeResponse> {
     const challenge = await this.challengeRepository.getById(id)
-    if (!challenge) throw new Error("challenge not found")
+    if (!challenge) throw new EditChallengeErrors.ChallengeNotFoundError(id)
     
-    const titleOrError: Result<ChallengeTitle> = ChallengeTitle.create({title})
-    const descriptionOrError: Result<ChallengeDescription> = ChallengeDescription.create({description})
-    const tagsOrError: Result<Tag>[] = tags.map((tag) => Tag.create({name: tag}))
+    const cTitle = ChallengeTitle.create({title})
+    const cDescription = ChallengeDescription.create({description})
+    const cTags = tags.map((tag) => Tag.create({name: tag}))
 
-    const propsResult: Result<any> = Result.combine([titleOrError, descriptionOrError, Result.combine(tagsOrError)])
-
-    if (propsResult.isFailure) return Result.fail(propsResult.getErrorValue())
-
-    challenge.editInformations(titleOrError.getValue(),descriptionOrError.getValue(),tagsOrError.map(r => r.getValue()))
+    challenge.editInformations(cTitle, cDescription, cTags)
     
     await this.challengeRepository.update(challenge)
 
-    return Result.ok()
   }
 }

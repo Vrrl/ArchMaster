@@ -12,7 +12,7 @@ interface CreateChallengeRequest{
   creatorId: string
 }
 
-type CreateChallengeResponse = object
+type CreateChallengeResponse = void
 
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse>{
   constructor(
@@ -21,15 +21,14 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
 
   async execute({title,description,tags,creatorId}: CreateChallengeRequest): Promise<CreateChallengeResponse> {
 
-    const titleOrError = new ChallengeTitle({title})
-    const descriptionOrError = new ChallengeDescription({description})
-    let tagsOrError: Tag[] = []
-    tags.forEach(tag => {tagsOrError.push(new Tag({name: tag}))})
+    const cTitle = ChallengeTitle.create({title})
+    const cDescription = ChallengeDescription.create({description})
+    const cTags = tags.map((tag) => Tag.create({name: tag}))
     
     const challenge = new Challenge({
-      title: titleOrError,
-      description: descriptionOrError,
-      tags: tagsOrError,
+      title: cTitle,
+      description: cDescription,
+      tags: cTags,
       creatorId: creatorId,
       verified: false,
       createdAt: new Date(),
@@ -37,6 +36,5 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
 
     await this.challengeRepository.create(challenge)
 
-    return challenge
   }
 }

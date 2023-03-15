@@ -1,5 +1,5 @@
 import { ValueObject } from "@src/core/domain/value-object";
-import { Result } from "@src/core/either";
+import { CoreErrors } from "@src/core/errors";
 
 import { z } from "zod";
 
@@ -15,12 +15,12 @@ export class Tag extends ValueObject<TagProps>{
     return this.props.name
   }
 
-  public static create(props: TagProps): Result<Tag>{
+  public static create(props: TagProps): Tag{
     
     const validator = TagProps.safeParse(props)
 
-    if(!validator.success) return Result.fail(validator.error.issues[0].message)
+    if(!validator.success) throw new CoreErrors.InvalidPropsError(validator.error.issues[0].message)
 
-    return Result.ok<Tag>(new Tag(validator.data)) 
+    return new Tag(validator.data)
   }
 }

@@ -1,13 +1,12 @@
-import { UseCaseError } from "@src/core/use-case-error";
-
+import { CoreErrors } from "@core/errors"
 
 export namespace EditChallengeErrors {
 
-  export class ChallengeNotFoundError extends Result<UseCaseError> {
-    constructor () {
-      super(false, {
-        message: `Challenge not found.`
-      } as UseCaseError)
+  export class ChallengeNotFoundError extends CoreErrors.UseCaseError {
+    constructor (target: string) {
+      super("Couldn't find a Challenge to edit. Target: " + target)
+      Object.setPrototypeOf(this, ChallengeNotFoundError.prototype);
     }
   }
+  
 }

@@ -25,7 +25,7 @@ describe("Create challenge", () => {
         description: description,
         tags: tags,
         creatorId: creatorId
-      })).resolves.toBeInstanceOf(Challenge)
+      })).resolves.toBeUndefined()
 
       expect(mockChallengeRepository.create).toBeCalledTimes(1)
   })
