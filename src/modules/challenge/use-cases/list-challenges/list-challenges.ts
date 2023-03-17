@@ -2,20 +2,20 @@ import { IUseCase } from "@src/core/use-case"
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
 import { Challenge } from "../../domain/challenge"
 
-interface ListAllChallengesRequest{
+interface ListChallengesRequest{
   index?: number
   limit?: number
 }
 
-type ListAllChallengesResponse = Challenge[]
+type ListChallengesResponse = Challenge[]
 
-export class ListAllChallengesUseCase implements IUseCase<ListAllChallengesRequest,ListAllChallengesResponse>{
+export class ListChallengesUseCase implements IUseCase<ListChallengesRequest,ListChallengesResponse>{
   constructor(
     private challengeRepository: IChallengeRepository
 
   ){}
 
-  async execute({index, limit}: ListAllChallengesRequest): Promise<ListAllChallengesResponse> {
+  async execute({index, limit}: ListChallengesRequest): Promise<ListChallengesResponse> {
     const challenges = await this.challengeRepository.list(index, limit);
 
     return challenges

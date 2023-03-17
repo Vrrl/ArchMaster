@@ -7,6 +7,13 @@ export const ok = (body: any): HttpResponse => {
   }
 }
 
+export const created = (body: any): HttpResponse => {
+  return {
+    statusCode: 201,
+    body
+  }
+}
+
 export const badRequest = (error: object): HttpResponse => {
   return {
     statusCode: 400,

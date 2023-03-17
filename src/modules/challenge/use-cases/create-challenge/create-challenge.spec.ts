@@ -1,4 +1,4 @@
-import { CreateChallengeUseCase } from "./create-challenge-use-case";
+import { CreateChallengeUseCase } from "./create-challenge";
 import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
 import { MockProxy, mock } from 'vitest-mock-extended';
@@ -27,6 +27,6 @@ describe("Create challenge", () => {
         creatorId: creatorId
       })).resolves.toBeUndefined()
 
-      expect(mockChallengeRepository.create).toBeCalledTimes(1)
+      expect(mockChallengeRepository.save).toBeCalledTimes(1)
   })
 })

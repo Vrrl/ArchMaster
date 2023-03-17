@@ -1,70 +1,64 @@
 import { Challenge } from "@src/modules/challenge/domain/challenge";
 import { IChallengeRepository } from "../challenge-repository";
-import { PrismaClient } from '@prisma/client'
 import { ChallengeMap } from "./mappers/challenge-map";
-import { prisma } from "@src/infra/db/prisma/client";
+import { prismaErrorHandler } from "../../prisma/errors/handler";
+import { PrismaClient } from "@prisma/client";
 
 export class ChallengeRepository implements IChallengeRepository{
 
-  constructor(){
+  constructor(private prisma: PrismaClient){}
+
+  hardDelete(id: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  delete(id: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  exists(id: string): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 
-  async create(challenge: Challenge): Promise<void>{
-    try {
+  @prismaErrorHandler
+  async save(challenge: Challenge): Promise<void>{
 
-      await prisma.challenge.create({
-        data: ChallengeMap.toPersistence(challenge),
-      })
-
-    } catch (error) {
-      console.log(error)
-    }
+    await this.prisma.challenge.create({
+      data: ChallengeMap.toPersistence(challenge),
+    })
     
   }
 
+  @prismaErrorHandler
   async getById(id: string): Promise<Challenge | null>{
-    try {
 
-      const challenge = await prisma.challenge.findUnique({
-        where: {
-          id: id,
-        },
-      })
+    const challenge = await this.prisma.challenge.findUnique({
+      where: {
+        id: id,
+      },
+    })
 
-      if(challenge !== null) return ChallengeMap.prismaToDomain(challenge)
+    if(challenge === null) return null
 
-    } catch (error) {
-      console.log(error)
-    }
-    return null
+    return ChallengeMap.toDomain(challenge)
   }
 
+  @prismaErrorHandler
   async update(challenge: Challenge): Promise<void>{
-    try {
-      const res = await prisma.challenge.update({
-        where: {
-          id: challenge.id,
-        },
-        data: ChallengeMap.toPersistence(challenge),
-      })
 
-    } catch (error) {
-      console.log(error)
-    }
+    const res = await this.prisma.challenge.update({
+      where: {
+        id: challenge.id,
+      },
+      data: ChallengeMap.toPersistence(challenge),
+    })
   }
 
+  @prismaErrorHandler
   async list(limit?: number, index?: number): Promise<Challenge[]>{
-    try {
+    const res = await this.prisma.challenge.findMany({
+      skip: index ? index : 0,
+      take: limit,
+    })
 
-      const res = await prisma.challenge.findMany({
-        skip: index ? index : 0,
-        take: limit,
-      })
-
-      return res.map(challenge => ChallengeMap.prismaToDomain(challenge))
-    } catch (error) {
-      console.log(error)
-    }
-    return []
+    return res.map(challenge => ChallengeMap.toDomain(challenge))
   }
 }

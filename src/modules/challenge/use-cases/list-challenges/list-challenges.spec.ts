@@ -5,7 +5,7 @@ import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repos
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { Tag } from "../../domain/tag";
-import { ListAllChallengesUseCase } from "./list-all-challenges-use-case";
+import { ListChallengesUseCase } from "./list-challenges";
 
 describe("Create challenge", () => {
   let mockChallengeRepository: MockProxy<IChallengeRepository>
@@ -16,7 +16,7 @@ describe("Create challenge", () => {
 
 
   it("should Edit a challenge", async () => {
-    const sut = new ListAllChallengesUseCase(mockChallengeRepository)
+    const sut = new ListChallengesUseCase(mockChallengeRepository)
     
     // TODO: create fixtures generators of challenges
     const challenge = new Challenge({

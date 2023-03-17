@@ -34,7 +34,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       createdAt: new Date(),
     })
 
-    await this.challengeRepository.create(challenge)
+    await this.challengeRepository.save(challenge)
 
   }
 }

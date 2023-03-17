@@ -4,7 +4,7 @@ import { MockProxy, mock } from 'vitest-mock-extended';
 import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
-import { EditChallengeUseCase } from "./edit-challenge-use-case";
+import { EditChallengeUseCase } from "./edit-challenge";
 import { Tag } from "../../domain/tag";
 import { CoreErrors } from "@src/core/errors";
 

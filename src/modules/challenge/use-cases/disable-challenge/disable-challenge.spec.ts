@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
 import { InMemoryChallengeRepository } from "@src/infra/db/repositories/in-memory/in-memory-challenge-repository";
-import { DisableChallengeUseCase } from "./disable-challenge-use-case";
+import { DisableChallengeUseCase } from "./disable-challenge";
 import { Tag } from "../../domain/tag";
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";

@@ -5,7 +5,7 @@ import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repos
 import { ChallengeDescription } from "../../domain/challenge-description";
 import { ChallengeTitle } from "../../domain/challenge-title";
 import { Tag } from "../../domain/tag";
-import { DeleteChallengeUseCase } from "./delete-challenge-use-case";
+import { DeleteChallengeUseCase } from "./delete-challenge";
 
 describe("Delete challenge", () => {
   let mockChallengeRepository: MockProxy<IChallengeRepository>

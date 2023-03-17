@@ -15,7 +15,7 @@ export interface ChallengeProps {
   editedAt?: Date
   deactivatedAt?: Date
   disabledAt?: Date
-} 
+}
 
 export class Challenge extends AggregateRoot<ChallengeProps>{
 
@@ -51,5 +51,11 @@ export class Challenge extends AggregateRoot<ChallengeProps>{
 
   activate(): void {
     this.props.deactivatedAt = undefined
+  }
+
+  public static create(props: ChallengeProps, id?: string): Challenge{
+    
+
+    return new Challenge(props, id)
   }
 }

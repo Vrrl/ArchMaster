@@ -2,13 +2,14 @@ import { IMapper } from "@src/core/infra/mapper";
 import { Challenge } from "@src/modules/challenge/domain/challenge";
 import { ChallengeDescription } from "@src/modules/challenge/domain/challenge-description";
 import { ChallengeTitle } from "@src/modules/challenge/domain/challenge-title";
+import { Submission } from "@src/modules/challenge/domain/submission";
 import { Tag } from "@src/modules/challenge/domain/tag";
 
 
-export class ChallengeMap implements IMapper<Challenge>{
+export class SubmissionMap implements IMapper<Submission>{
 
-  public static toDomain(schema: any): Challenge{
-    const challenge = Challenge.create({
+  public static ToDomain(schema: any): Challenge{
+    const challengeOrError = new Challenge({
       title: ChallengeTitle.create({title: schema.title}),
       description: ChallengeDescription.create({description: schema.description}),
       tags: schema.tags.map((tag: any) => Tag.create({name: tag})),
@@ -20,7 +21,7 @@ export class ChallengeMap implements IMapper<Challenge>{
       editedAt: schema.editedAt,
     }, schema.id)
 
-    return challenge
+    return challengeOrError
   }
 
   public static toPersistence(challenge: Challenge): any{

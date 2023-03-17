@@ -1,7 +1,7 @@
-import { ok } from "@core/infra/helpers/http";
+import { created } from "@core/infra/helpers/http";
 import { HttpRequest, HttpResponse } from "@core/infra/http";
 import { Controller } from "@core/infra/controller";
-import { CreateChallengeUseCase } from "./create-challenge-use-case";
+import { CreateChallengeUseCase } from "./create-challenge";
 import { z } from "zod";
 
 export class CreateChallengeController extends Controller {
@@ -29,6 +29,6 @@ export class CreateChallengeController extends Controller {
       creatorId
     })
 
-    return ok(res)
+    return created(res)
   }
 }
