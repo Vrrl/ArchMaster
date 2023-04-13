@@ -2,7 +2,7 @@ import { CreateChallengeUseCase } from "./create-challenge";
 import { describe, expect, it, beforeEach } from "vitest";
 import { Challenge } from "../../domain/challenge";
 import { MockProxy, mock } from 'vitest-mock-extended';
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository";
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-query-repository";
 
 
 describe("Create challenge", () => {

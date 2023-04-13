@@ -1,6 +1,6 @@
 import { IUseCase } from "@src/core/use-case"
 import { IAvaliationRepository } from "@src/infra/db/repositories/avaliation-repository"
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-query-repository"
 import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Avaliation } from "../../domain/avaliation"
 import { AvaliationTypes } from "../../domain/avaliation-types"

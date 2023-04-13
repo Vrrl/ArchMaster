@@ -3,13 +3,11 @@ import { CoreErrors } from "@src/core/errors";
 
 import { z } from "zod";
 
-const ChallengeDescriptionProps = z.object({
-  description: z.string().min(0).max(2000),
-});
-
-type ChallengeDescriptionProps = z.infer<typeof ChallengeDescriptionProps>;
-
 export class ChallengeDescription extends ValueObject<ChallengeDescriptionProps>{
+
+  public static readonly maxlength: number = 2000
+  public static readonly minlength: number = 0
+
   getValue(): string{
     return this.props.description;
   }
@@ -23,3 +21,9 @@ export class ChallengeDescription extends ValueObject<ChallengeDescriptionProps>
     return new ChallengeDescription(validator.data)
   }
 }
+
+const ChallengeDescriptionProps: z.AnyZodObject = z.object({
+  description: z.string().min(ChallengeDescription.minlength).max(ChallengeDescription.maxlength),
+});
+
+type ChallengeDescriptionProps = z.infer<typeof ChallengeDescriptionProps>;

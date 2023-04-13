@@ -3,13 +3,13 @@ import { ChallengeDescription } from "@src/modules/challenge/domain/challenge-de
 import { ChallengeTitle } from "@src/modules/challenge/domain/challenge-title";
 import { Tag } from "@src/modules/challenge/domain/tag";
 import { describe, expect, it, test } from "vitest";
-import { ChallengeRepository } from "./challenge-repository";
+import { ChallengeCommandRepository } from "./challenge-command-repository";
 
 // TODO: make repo tests & depency injection
-describe("Challenge repository tests", () => {
+describe("Challenge Command repository tests", () => {
 
-  it.skip("Create a challenge", async () => {
-    const sut = new ChallengeRepository()
+  it.skip("Save a new challenge", async () => {
+    const sut = new ChallengeCommandRepository()
 
     const challenge = new Challenge({
       title: ChallengeTitle.create({title: "Some title 2"}),
@@ -20,12 +20,7 @@ describe("Challenge repository tests", () => {
       createdAt: new Date(),
     }, "139ccc91-361a-4137-b41b-001a80e0c5f7")
   
-    await expect(sut.create()).toBe() 
+    await expect(sut.save()).toBe() 
   })
 
-  it.skip("Should list challenges", async () => {
-    const sut = new ChallengeRepository()
-
-    await expect(sut.list(1,0)).toBe() 
-  })
 })

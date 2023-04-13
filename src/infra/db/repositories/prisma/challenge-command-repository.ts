@@ -1,10 +1,10 @@
 import { Challenge } from "@src/modules/challenge/domain/challenge";
-import { IChallengeRepository } from "../challenge-repository";
 import { ChallengeMap } from "./mappers/challenge-map";
 import { prismaErrorHandler } from "../../prisma/errors/handler";
 import { PrismaClient } from "@prisma/client";
+import { IChallengeCommandRepository } from "../challenge-command-repository";
 
-export class ChallengeRepository implements IChallengeRepository{
+export class ChallengeCommandRepository implements IChallengeCommandRepository{
 
   constructor(private prisma: PrismaClient){}
 
@@ -12,9 +12,6 @@ export class ChallengeRepository implements IChallengeRepository{
     throw new Error("Method not implemented.");
   }
   delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
-  exists(id: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
@@ -28,20 +25,6 @@ export class ChallengeRepository implements IChallengeRepository{
   }
 
   @prismaErrorHandler
-  async getById(id: string): Promise<Challenge | null>{
-
-    const challenge = await this.prisma.challenge.findUnique({
-      where: {
-        id: id,
-      },
-    })
-
-    if(challenge === null) return null
-
-    return ChallengeMap.toDomain(challenge)
-  }
-
-  @prismaErrorHandler
   async update(challenge: Challenge): Promise<void>{
 
     const res = await this.prisma.challenge.update({
@@ -52,13 +35,4 @@ export class ChallengeRepository implements IChallengeRepository{
     })
   }
 
-  @prismaErrorHandler
-  async list(limit?: number, index?: number): Promise<Challenge[]>{
-    const res = await this.prisma.challenge.findMany({
-      skip: index ? index : 0,
-      take: limit,
-    })
-
-    return res.map(challenge => ChallengeMap.toDomain(challenge))
-  }
 }

@@ -1,5 +1,5 @@
 import { IUseCase } from "@src/core/use-case"
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IChallengeCommandRepository } from "@src/infra/db/repositories/challenge-command-repository"
 import { Challenge } from "../../domain/challenge"
 import { ChallengeDescription } from "../../domain/challenge-description"
 import { ChallengeTitle } from "../../domain/challenge-title"
@@ -16,7 +16,7 @@ type CreateChallengeResponse = void
 
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse>{
   constructor(
-    private challengeRepository: IChallengeRepository
+    private challengeCommandRepository: IChallengeCommandRepository
   ){}
 
   async execute({title,description,tags,creatorId}: CreateChallengeRequest): Promise<CreateChallengeResponse> {
@@ -34,7 +34,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       createdAt: new Date(),
     })
 
-    await this.challengeRepository.save(challenge)
+    await this.challengeCommandRepository.save(challenge)
 
   }
 }

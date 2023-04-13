@@ -1,5 +1,5 @@
 import { IUseCase } from "@src/core/use-case"
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IChallengeRepository } from "@src/infra/db/repositories/challenge-query-repository"
 import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Submission } from "../../domain/submission"
 import { SubmitChallengeErrors } from "./submit-challenge-errors"

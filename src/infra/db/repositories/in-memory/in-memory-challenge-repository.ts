@@ -1,5 +1,5 @@
 import { Challenge } from "@modules/challenge/domain/challenge";
-import { ChallengeRepository } from "../challenge-repository";
+import { ChallengeRepository } from "../challenge-query-repository";
 
 export class InMemoryChallengeRepository implements ChallengeRepository {
   public items: Challenge[] = [];

@@ -1,5 +1,5 @@
 import { IUseCase } from "@src/core/use-case"
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-repository"
+import { IChallengeQueryRepository } from "@src/infra/db/repositories/challenge-query-repository"
 import { Challenge } from "../../domain/challenge"
 
 interface ListChallengesRequest{
@@ -11,12 +11,12 @@ type ListChallengesResponse = Challenge[]
 
 export class ListChallengesUseCase implements IUseCase<ListChallengesRequest,ListChallengesResponse>{
   constructor(
-    private challengeRepository: IChallengeRepository
+    private challengeQueryRepository: IChallengeQueryRepository
 
   ){}
 
   async execute({index, limit}: ListChallengesRequest): Promise<ListChallengesResponse> {
-    const challenges = await this.challengeRepository.list(index, limit);
+    const challenges = await this.challengeQueryRepository.list(index, limit);
 
     return challenges
   }

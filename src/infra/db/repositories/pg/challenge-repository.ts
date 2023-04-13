@@ -1,5 +1,5 @@
 import { Challenge } from "@src/modules/challenge/domain/challenge";
-import { IChallengeRepository } from "../challenge-repository";
+import { IChallengeRepository } from "../challenge-query-repository";
 import { pool } from "../../pg/connection"
 
 
