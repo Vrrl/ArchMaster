@@ -1,6 +1,7 @@
 import { IUseCase } from "@src/core/use-case"
 import { IAvaliationRepository } from "@src/infra/db/repositories/avaliation-repository"
-import { IChallengeRepository } from "@src/infra/db/repositories/challenge-query-repository"
+import { IChallengeCommandRepository } from "@src/infra/db/repositories/challenge-command-repository"
+import { IChallengeQueryRepository } from "@src/infra/db/repositories/challenge-query-repository"
 import { ISubmissionRepository } from "@src/infra/db/repositories/submission-repository"
 import { Avaliation } from "../../domain/avaliation"
 import { AvaliationTypes } from "../../domain/avaliation-types"
@@ -16,13 +17,13 @@ type RequestSubmissionManualValidationResponse = void
 
 export class RequestSubmissionManualValidationUseCase implements IUseCase<RequestSubmissionManualValidationRequest,RequestSubmissionManualValidationResponse> {
   constructor(
-    private challengeRepository: IChallengeRepository,
+    private challengeQueryRepository: IChallengeQueryRepository,
     private submissionRepository: ISubmissionRepository,
     private avaliationRepository: IAvaliationRepository
   ) { }
 
   async execute({ id,userId,submissionId }: RequestSubmissionManualValidationRequest): Promise<RequestSubmissionManualValidationResponse> {
-    const challenge = await this.challengeRepository.getById(id)
+    const challenge = await this.challengeQueryRepository.getById(id)
     if (!challenge) throw new RequestManualValidationErrors.ChallengeNotFoundError(id)
 
     const submission = await this.submissionRepository.getById(submissionId)
