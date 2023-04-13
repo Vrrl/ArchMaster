@@ -7,16 +7,23 @@ interface ListChallengesRequest{
   limit?: number
 }
 
-type ListChallengesResponse = Challenge[]
+export type ListChallengesResponse = {
+  id: string;
+  title: string;
+  tags: string[];
+  verified: boolean;
+  creator: {
+    name: string | null;
+  };
+}[]
 
 export class ListChallengesUseCase implements IUseCase<ListChallengesRequest,ListChallengesResponse>{
   constructor(
     private challengeQueryRepository: IChallengeQueryRepository
-
   ){}
 
   async execute({index, limit}: ListChallengesRequest): Promise<ListChallengesResponse> {
-    const challenges = await this.challengeQueryRepository.list(index, limit);
+    const challenges = await this.challengeQueryRepository.exploreList(index, limit);
 
     return challenges
   }
