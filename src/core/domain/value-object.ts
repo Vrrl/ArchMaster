@@ -1,4 +1,3 @@
-
 // import { shallowEqual } from "shallow-equal-object";
 
 interface ValueObjectProps {
@@ -6,7 +5,7 @@ interface ValueObjectProps {
 }
 
 /**
- * @desc 
+ * @desc
  * ValueObjects are objects that we determine their
  * equality through their structrual property.
  */
@@ -14,11 +13,11 @@ interface ValueObjectProps {
 export abstract class ValueObject<T extends ValueObjectProps> {
   public readonly props: T;
 
-  constructor (props: T) {
+  constructor(props: T) {
     this.props = Object.freeze(props);
   }
 
-  public equals (vo?: ValueObject<T>) : boolean {
+  public equals(vo?: ValueObject<T>): boolean {
     // TODO: make tests
     if (vo === null || vo === undefined) {
       return false;
@@ -27,7 +26,7 @@ export abstract class ValueObject<T extends ValueObjectProps> {
       return false;
     }
     // TODO: THIS IS WRONG
-    return true
+    return true;
     // return shallowEqual(this.props, vo.props)
   }
 }

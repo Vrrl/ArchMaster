@@ -1,5 +1,4 @@
-
 export enum AvaliationTypes {
-  MANUAL = "MANUAL",
-  AUTOMATIC = "AUTOMATIC"
+  MANUAL = 'MANUAL',
+  AUTOMATIC = 'AUTOMATIC',
 }

@@ -1,11 +1,13 @@
-import { ok } from "@core/infra/helpers/http";
-import { HttpRequest, HttpResponse } from "@core/infra/http";
-import { Controller } from "@core/infra/controller";
-import { z } from "zod";
-import { EditChallengeUseCase } from "./edit-challenge";
+import { ok } from '@core/infra/helpers/http';
+import { HttpRequest, HttpResponse } from '@core/infra/http';
+import { Controller } from '@core/infra/controller';
+import { z } from 'zod';
+import { EditChallengeUseCase } from './edit-challenge';
 
 export class EditChallengeController extends Controller {
-  constructor(private readonly editChallengeUseCase: EditChallengeUseCase) { super() }
+  constructor(private readonly editChallengeUseCase: EditChallengeUseCase) {
+    super();
+  }
 
   get requestSchema(): z.AnyZodObject {
     return z.object({
@@ -21,17 +23,17 @@ export class EditChallengeController extends Controller {
   }
 
   async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { title, description, tags} = httpRequest.body
-    const { id } = httpRequest.params
-    const userId = "UUID-FAKE-FOR-TEST"
+    const { title, description, tags } = httpRequest.body;
+    const { id } = httpRequest.params;
+    // const userId = 'UUID-FAKE-FOR-TEST';
 
     const res = await this.editChallengeUseCase.execute({
-      id, 
-      title, 
-      description, 
-      tags
-    })
+      id,
+      title,
+      description,
+      tags,
+    });
 
-    return ok(res)
+    return ok(res);
   }
 }

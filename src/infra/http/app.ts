@@ -1,21 +1,20 @@
-import express from "express";
-import cors from "cors";
-import { v1Router } from './routes/v1';
+// import express from 'express';
+// import cors from 'cors';
+// // import AppointmentRoutes from '@src/modules/appointment/routes';
+// import ChallengeRoutes from '@src/modules/challenge/routes';
+// import serverless from 'serverless-http';
 
+// const app = express();
 
-const app = express();
+// const origin = {
+//   // origin: isProduction ? 'https://dddforum.com' : '*',
+//   origin: '*',
+// };
 
-const origin = {
-  // origin: isProduction ? 'https://dddforum.com' : '*',
-  origin: "*"
-}
+// app.use(express.json({ limit: '5mb' }));
+// app.use(cors(origin));
 
-app.use(express.json({limit: '5mb'}));
-app.use(cors(origin));
+// // app.use('/v1/appointments', AppointmentRoutes);
+// app.use('/v1/challenges', ChallengeRoutes);
 
-app.use("/api/v1", v1Router)
-
-
-app.listen(3000, () => {
-  console.log(`[App] Server listening on port http://localhost:3000`)
-})
+// export const handler = serverless(app);

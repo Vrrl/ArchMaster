@@ -1,5 +1,3 @@
-
-
 // export abstract class MiddlewareFactory {
 //   protected validation: Validation
 //   protected mid: Middleware
@@ -23,7 +21,7 @@
 //   abstract validations(optional?: boolean): (Error | null)[]
 //   abstract middleware(): Middleware
 
-//   make(): Middleware { 
+//   make(): Middleware {
 //       return this.mid
 //   }
 // }
@@ -69,7 +67,7 @@
 //           body: {message: error.message}
 //         }
 //       }
-      
+
 //       console.log(error);
 //       return serverError();
 //     }

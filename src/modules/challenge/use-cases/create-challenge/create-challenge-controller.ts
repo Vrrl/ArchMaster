@@ -1,11 +1,13 @@
-import { created } from "@core/infra/helpers/http";
-import { HttpRequest, HttpResponse } from "@core/infra/http";
-import { Controller } from "@core/infra/controller";
-import { CreateChallengeUseCase } from "./create-challenge";
-import { z } from "zod";
+import { created } from '@core/infra/helpers/http';
+import { HttpRequest, HttpResponse } from '@core/infra/http';
+import { Controller } from '@core/infra/controller';
+import { CreateChallengeUseCase } from './create-challenge';
+import { z } from 'zod';
 
 export class CreateChallengeController extends Controller {
-  constructor(private readonly createChallengeUseCase: CreateChallengeUseCase) { super() }
+  constructor(private readonly createChallengeUseCase: CreateChallengeUseCase) {
+    super();
+  }
 
   get requestSchema(): z.AnyZodObject {
     return z.object({
@@ -14,21 +16,20 @@ export class CreateChallengeController extends Controller {
         description: z.string().max(2000),
         tags: z.array(z.string().min(2).max(50)),
         creatorId: z.string(),
-      })
+      }),
     });
   }
 
   async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { title, description, tags, creatorId } = httpRequest.body
-
+    const { title, description, tags, creatorId } = httpRequest.body;
 
     const res = await this.createChallengeUseCase.execute({
       title,
       description,
       tags,
-      creatorId
-    })
+      creatorId,
+    });
 
-    return created(res)
+    return created(res);
   }
 }

@@ -1,5 +1,5 @@
-import { Appointment } from "../../appointment/domain/appointment";
+import { Appointment } from '../../appointment/domain/appointment';
 
-export interface IAppointmentRepository{
-    create(appointment: Appointment): Promise<void>;
+export interface IAppointmentRepository {
+  create(appointment: Appointment): Promise<void>;
 }

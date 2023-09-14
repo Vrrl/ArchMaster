@@ -1,17 +1,13 @@
-import { UseCase } from "@src/core/use-case"
+// import { UseCase } from '@src/core/use-case';
 
-interface CloseChallengeRequest{
-  id: string
-}
+// interface CloseChallengeRequest {
+//   id: string;
+// }
 
-type CloseChallengeResponse = object[]
+// type CloseChallengeResponse = object[];
 
-export class CloseChallengeUseCase implements UseCase<>{
-  constructor(
+// export class CloseChallengeUseCase implements UseCase<> {
+//   constructor() {}
 
-  ){}
-
-  async execute({id}: CloseChallengeRequest): Promise<CloseChallengeResponse> {
-    
-  }
-}
+//   async execute({ id }: CloseChallengeRequest): Promise<CloseChallengeResponse> {}
+// }
