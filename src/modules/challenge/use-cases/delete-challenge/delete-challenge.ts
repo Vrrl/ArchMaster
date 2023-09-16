@@ -1,7 +1,7 @@
 import { IUseCase } from '@src/core/use-case';
 import { IChallengeCommandRepository } from '@src/infra/db/repositories/challenge-command-repository';
 import { IChallengeQueryRepository } from '@src/infra/db/repositories/challenge-query-repository';
-import { DeleteChallengeErrors } from './delete-challenge-errors';
+import * as UseCaseErrors from './delete-challenge-errors';
 
 interface DeleteChallengeRequest {
   id: string;
@@ -18,7 +18,7 @@ export class DeleteChallengeUseCase implements IUseCase<DeleteChallengeRequest, 
 
   async execute({ id }: DeleteChallengeRequest): Promise<void> {
     const challenge = await this.challengeQueryRepository.getById(id);
-    if (!challenge) throw new DeleteChallengeErrors.ChallengeNotFoundError(id);
+    if (!challenge) throw new UseCaseErrors.ChallengeNotFoundError(id);
 
     challenge.deactivate();
 

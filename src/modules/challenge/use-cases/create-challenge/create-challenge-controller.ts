@@ -1,11 +1,14 @@
+import { inject, injectable } from 'inversify';
+import { z } from 'zod';
 import { created } from '@core/infra/helpers/http';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { CreateChallengeUseCase } from './create-challenge';
-import { z } from 'zod';
+import TYPES from '@src/core/types';
 
+@injectable()
 export class CreateChallengeController extends Controller {
-  constructor(private readonly createChallengeUseCase: CreateChallengeUseCase) {
+  constructor(@inject(TYPES.CreateChallengeUseCase) private readonly createChallengeUseCase: CreateChallengeUseCase) {
     super();
   }
 

@@ -4,7 +4,7 @@ import { main } from './src/infra/aws/functions';
 const serverlessConfiguration: AWS = {
   service: 'ArchMasterBFF',
   frameworkVersion: '3',
-  plugins: ['serverless-esbuild, serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',

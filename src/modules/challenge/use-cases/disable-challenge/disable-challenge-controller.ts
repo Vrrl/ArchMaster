@@ -23,7 +23,7 @@ export class DisableChallengeController extends Controller {
 
     const res = await this.disableChallengeUseCase.execute({
       id,
-      userId,
+      // userId,
     });
 
     return ok(res);

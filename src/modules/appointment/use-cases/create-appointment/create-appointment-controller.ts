@@ -2,10 +2,15 @@ import { CreateAppointmentUseCase } from './create-appointment-use-case';
 import { ok } from '@core/infra/helpers/http';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
+import { AnyZodObject } from 'zod';
 
 export class CreateAppointmentController extends Controller {
   constructor(private readonly createAppointmentUseCase: CreateAppointmentUseCase) {
     super();
+  }
+
+  get requestSchema(): AnyZodObject {
+    throw new Error('Method not implemented.');
   }
 
   validationRules(): Record<string, string> {

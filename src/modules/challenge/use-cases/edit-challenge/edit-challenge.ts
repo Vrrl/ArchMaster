@@ -1,4 +1,4 @@
-// import { CoreErrors } from '@src/core/errors';
+// import * as CoreErrors from '@src/core/errors';
 import { IUseCase } from '@src/core/use-case';
 import { IChallengeCommandRepository } from '@src/infra/db/repositories/challenge-command-repository';
 import { IChallengeQueryRepository } from '@src/infra/db/repositories/challenge-query-repository';

@@ -2,7 +2,7 @@ import { IUseCase } from '@src/core/use-case';
 import { IChallengeQueryRepository } from '@src/infra/db/repositories/challenge-query-repository';
 import { ISubmissionRepository } from '@src/infra/db/repositories/submission-repository';
 import { Submission } from '../../domain/submission';
-import { SubmitChallengeErrors } from './submit-challenge-errors';
+import * as UseCaseErrors from './submit-challenge-errors';
 
 interface SubmitChallengeRequest {
   userId: string;
@@ -20,7 +20,7 @@ export class SubmitChallengeUseCase implements IUseCase<SubmitChallengeRequest, 
 
   async execute({ userId, challengeId, repositoryLink }: SubmitChallengeRequest): Promise<SubmitChallengeResponse> {
     const challenge = await this.challengeQueryRepository.getById(challengeId);
-    if (!challenge) throw new SubmitChallengeErrors.ChallengeNotFoundError(challengeId);
+    if (!challenge) throw new UseCaseErrors.ChallengeNotFoundError(challengeId);
 
     const newSubmission = new Submission({ ownerId: userId, challengeId: challengeId, repositoryLink: repositoryLink });
 

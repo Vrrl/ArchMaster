@@ -23,7 +23,7 @@ export class DeleteChallengeController extends Controller {
 
     const res = await this.deleteChallengeUseCase.execute({
       id,
-      userId,
+      // userId,
     });
 
     return ok(res);

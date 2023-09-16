@@ -1,7 +1,7 @@
 import { Appointment } from '../../../appointment/domain/appointment';
-import { AppointmentRepository } from '../appointment-repository';
+import { IAppointmentRepository } from '../appointment-repository';
 
-export class InMemoryAppointmentRepository implements AppointmentRepository {
+export class InMemoryAppointmentRepository implements IAppointmentRepository {
   public items: Appointment[] = [];
 
   async create(appointment: Appointment): Promise<void> {

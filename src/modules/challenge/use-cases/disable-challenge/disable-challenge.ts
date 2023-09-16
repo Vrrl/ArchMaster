@@ -2,7 +2,7 @@ import { IUseCase } from '@src/core/use-case';
 import { IChallengeCommandRepository } from '@src/infra/db/repositories/challenge-command-repository';
 import { IChallengeQueryRepository } from '@src/infra/db/repositories/challenge-query-repository';
 // import { Challenge } from '../../domain/challenge';
-import { DisableChallengeErrors } from './disable-challenge-errors';
+import * as UseCaseErrors from './disable-challenge-errors';
 
 interface DisableChallengeRequest {
   id: string;
@@ -18,7 +18,7 @@ export class DisableChallengeUseCase implements IUseCase<DisableChallengeRequest
 
   async execute({ id }: DisableChallengeRequest): Promise<void> {
     const challenge = await this.challengeQueryRepository.getById(id);
-    if (!challenge) throw new DisableChallengeErrors.ChallengeNotFoundError(id);
+    if (!challenge) throw new UseCaseErrors.ChallengeNotFoundError(id);
 
     challenge.disable();
 

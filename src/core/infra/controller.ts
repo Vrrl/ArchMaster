@@ -3,13 +3,14 @@ import { badRequest, serverError } from './helpers/http';
 import { make } from 'simple-body-validator';
 import { HttpException } from '@src/core/infra/errors/http';
 import { z } from 'zod';
-
+import { injectable } from 'inversify';
 export abstract class ControllerFactory {
   constructor() {}
 
   abstract makeController(): Controller;
 }
 
+@injectable()
 export abstract class Controller {
   constructor() {}
 

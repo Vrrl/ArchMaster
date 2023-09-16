@@ -1,3 +1,5 @@
+import TYPES from '@src/core/types';
+import { inject, injectable } from 'inversify';
 import { IUseCase } from '@src/core/use-case';
 import { IChallengeCommandRepository } from '@src/infra/db/repositories/challenge-command-repository';
 import { Challenge } from '../../domain/challenge';
@@ -14,8 +16,11 @@ interface CreateChallengeRequest {
 
 type CreateChallengeResponse = void;
 
+@injectable()
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse> {
-  constructor(private challengeCommandRepository: IChallengeCommandRepository) {}
+  constructor(
+    @inject(TYPES.IChallengeCommandRepository) private challengeCommandRepository: IChallengeCommandRepository,
+  ) {}
 
   async execute({ title, description, tags, creatorId }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
     const cTitle = ChallengeTitle.create({ title });
@@ -31,6 +36,6 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       createdAt: new Date(),
     });
 
-    await this.challengeCommandRepository.save(challenge);
+    console.log(this.challengeCommandRepository.save(challenge));
   }
 }

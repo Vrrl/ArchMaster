@@ -9,12 +9,12 @@ export const middyRouterAdapter = (router: Router) => {
   /*
    * @Adapter: Adapt an @class Router object to Middy Object
    */
-  const routes = router.routes.map(({ path, handler, method }) => {
+  const routes = router.routes.map(({ path, controller, method }) => {
     const middyHandler = middy().handler(async (event: APIGatewayEvent, context: Context) => {
       const request: HttpRequest = {
         body: event.body,
       };
-      return await handler(request);
+      return await controller.handle(request);
     });
 
     return {

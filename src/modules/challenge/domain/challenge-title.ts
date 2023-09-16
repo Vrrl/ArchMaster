@@ -1,5 +1,5 @@
 import { ValueObject } from '@src/core/domain/value-object';
-import { CoreErrors } from '@src/core/errors';
+import * as CoreErrors from '@src/core/errors';
 import { z } from 'zod';
 
 const ChallengeTitleProps = z.object({

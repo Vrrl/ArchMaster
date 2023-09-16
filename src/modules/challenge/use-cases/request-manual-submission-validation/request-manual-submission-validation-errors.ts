@@ -1,4 +1,4 @@
-import { CoreErrors } from '@core/errors';
+import * as CoreErrors from '@core/errors';
 
 export class ChallengeNotFoundError extends CoreErrors.UseCaseError {
   constructor(target: string) {

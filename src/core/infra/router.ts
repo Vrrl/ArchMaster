@@ -1,11 +1,11 @@
-import { HttpRequest, HttpResponse } from './http';
+import { Controller } from './controller';
 
 type httpMethods = 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE';
 
 type route = {
   method: httpMethods;
   path: string;
-  handler: (httpRequest: HttpRequest) => Promise<HttpResponse>;
+  controller: Controller;
 };
 
 export class Router {
@@ -22,7 +22,7 @@ export class Router {
       return {
         method: rawRoute.method,
         path: this.prefix + rawRoute.path,
-        handler: rawRoute.handler,
+        controller: rawRoute.controller,
       };
     });
   }
@@ -31,24 +31,24 @@ export class Router {
     this.rawRoutes.push(route);
   }
 
-  get(path: string, handler: (httpRequest: HttpRequest) => Promise<HttpResponse>) {
-    this.addRoute({ method: 'GET', path, handler });
+  get(path: string, controller: Controller) {
+    this.addRoute({ method: 'GET', path, controller });
   }
 
-  post(path: string, handler: (httpRequest: HttpRequest) => Promise<HttpResponse>) {
-    this.addRoute({ method: 'POST', path, handler });
+  post(path: string, controller: Controller) {
+    this.addRoute({ method: 'POST', path, controller });
   }
 
-  delete(path: string, handler: (httpRequest: HttpRequest) => Promise<HttpResponse>) {
-    this.addRoute({ method: 'DELETE', path, handler });
+  delete(path: string, controller: Controller) {
+    this.addRoute({ method: 'DELETE', path, controller });
   }
 
-  put(path: string, handler: (httpRequest: HttpRequest) => Promise<HttpResponse>) {
-    this.addRoute({ method: 'PUT', path, handler });
+  put(path: string, controller: Controller) {
+    this.addRoute({ method: 'PUT', path, controller });
   }
 
-  patch(path: string, handler: (httpRequest: HttpRequest) => Promise<HttpResponse>) {
-    this.addRoute({ method: 'PATCH', path, handler });
+  patch(path: string, controller: Controller) {
+    this.addRoute({ method: 'PATCH', path, controller });
   }
 
   useRouter(routers: Router[]): void {
