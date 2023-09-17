@@ -1,9 +1,9 @@
-import { HttpRequest } from 'src/core/infra/http';
+import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2 } from 'aws-lambda';
+import { HttpRequest } from '@core/infra/http';
 import { Router } from '@core/infra/router';
 import middy from '@middy/core';
 import httpRouterHandler, { Route } from '@middy/http-router';
 import httpHeaderNormalizer from '@middy/http-header-normalizer';
-import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2, Context } from 'aws-lambda';
 
 export const middyRouterAdapter = (router: Router) => {
   /*
@@ -22,8 +22,8 @@ export const middyRouterAdapter = (router: Router) => {
     });
 
     return {
-      path: '/' + path,
-      method: 'GET',
+      path,
+      method,
       handler: middyHandler,
     };
   });

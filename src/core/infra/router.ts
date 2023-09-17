@@ -9,19 +9,28 @@ type route = {
 };
 
 export class Router {
-  constructor(prefix?: string) {
-    this.prefix = prefix ?? '';
+  constructor(prefix: string = '') {
+    this.prefix = prefix;
     this.rawRoutes = [];
   }
 
   rawRoutes: route[];
-  prefix?: string;
+  prefix: string;
+
+  private joinPaths(head: string, tail: string): string {
+    const normalizedHead = head.endsWith('/') ? head : head + '/';
+    const normalizedTail = tail.startsWith('/') ? tail.substring(1) : tail;
+    const newPath = normalizedHead + normalizedTail;
+
+    return newPath.endsWith('/') ? newPath.slice(0, -1) : newPath;
+  }
 
   get routes(): route[] {
     return this.rawRoutes.map(rawRoute => {
+      const fullPath = this.joinPaths(this.prefix, rawRoute.path);
       return {
         method: rawRoute.method,
-        path: this.prefix + rawRoute.path,
+        path: fullPath.startsWith('/') ? fullPath : '/' + fullPath,
         controller: rawRoute.controller,
       };
     });
