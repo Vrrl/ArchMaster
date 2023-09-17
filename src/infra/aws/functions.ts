@@ -1,18 +1,28 @@
+import { AWS } from '@serverless/typescript';
 import router from '../http/routes';
 import { middyRouterAdapter } from './adapters/middy-adapters';
 
-const handler = middyRouterAdapter(router);
+export const main = middyRouterAdapter(router);
 
-export default handler;
-
-export const main = {
-  handler: `./dist/src/infra/aws/functions.handler`,
-  events: [
-    {
-      http: {
-        method: 'ANY',
-        path: '/',
-      },
-    },
-  ],
+export const handlerPath = (context: string) => {
+  return `${context.split(process.cwd())[1].substring(1).replace(/\\/g, '/')}`;
 };
+
+const functions: AWS['functions'] = Object.fromEntries(
+  router.routes.map(({ path, method }, index) => [
+    `functionName${index}`,
+    {
+      handler: `${handlerPath(__dirname)}/functions.main`,
+      events: [
+        {
+          http: {
+            method: 'GET',
+            path: '/v1/challenge/',
+          },
+        },
+      ],
+    },
+  ]),
+);
+
+export default functions;

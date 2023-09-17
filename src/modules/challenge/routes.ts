@@ -1,6 +1,4 @@
 import container from '@core/injector';
-import { adaptController } from '@infra/http/adapters/express-adapters';
-import { CreateChallengeControllerFactory } from './use-cases/create-challenge/create-challenge-controller-factory';
 // import { ListChallengesControllerFactory } from './use-cases/list-challenges/list-challenges-controller-factory';
 // import { DisableChallengeControllerFactory } from './use-cases/disable-challenge/disable-challenge-controller-factory';
 // import { EditChallengeControllerFactory } from './use-cases/edit-challenge/edit-challenge-controller-factory';

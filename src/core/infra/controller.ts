@@ -1,6 +1,5 @@
-import { HttpRequest, HttpResponse } from '../../infra/http/interfaces./../../core/infra/http';
+import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { badRequest, serverError } from './helpers/http';
-import { make } from 'simple-body-validator';
 import { HttpException } from '@src/core/infra/errors/http';
 import { z } from 'zod';
 import { injectable } from 'inversify';

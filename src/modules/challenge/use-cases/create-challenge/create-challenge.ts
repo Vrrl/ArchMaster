@@ -18,9 +18,7 @@ type CreateChallengeResponse = void;
 
 @injectable()
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse> {
-  constructor(
-    @inject(TYPES.IChallengeCommandRepository) private challengeCommandRepository: IChallengeCommandRepository,
-  ) {}
+  constructor() {}
 
   async execute({ title, description, tags, creatorId }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
     const cTitle = ChallengeTitle.create({ title });
@@ -36,6 +34,6 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       createdAt: new Date(),
     });
 
-    console.log(this.challengeCommandRepository.save(challenge));
+    console.log('created', challenge);
   }
 }
