@@ -11,7 +11,7 @@ export const ok = (body: any, headers: object = {}): HttpResponse => {
   };
 };
 
-export const created = (body: any, headers: object = {}): HttpResponse => {
+export const created = (body?: any, headers: object = {}): HttpResponse => {
   return {
     statusCode: 201,
     body,

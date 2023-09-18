@@ -1,6 +1,6 @@
 const TYPES = {
   // Resources
-  PrismaClient: Symbol.for('PrismaClient'),
+  DynamoDBClient: Symbol.for('DynamoDBClient'),
   // Repos
   IChallengeCommandRepository: Symbol.for('IChallengeCommandRepository'),
   // UseCases

@@ -11,7 +11,6 @@ interface CreateChallengeRequest {
   title: string;
   description: string;
   tags: string[];
-  creatorId: string;
 }
 
 type CreateChallengeResponse = void;
@@ -20,20 +19,18 @@ type CreateChallengeResponse = void;
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse> {
   constructor() {}
 
-  async execute({ title, description, tags, creatorId }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
+  async execute({ title, description, tags }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
     const cTitle = ChallengeTitle.create({ title });
     const cDescription = ChallengeDescription.create({ description });
     const cTags = tags.map(tag => Tag.create({ name: tag }));
 
-    const challenge = new Challenge({
+    new Challenge({
       title: cTitle,
       description: cDescription,
       tags: cTags,
-      creatorId: creatorId,
+      creatorId: 'creatorId',
       verified: false,
       createdAt: new Date(),
     });
-
-    console.log('created', challenge);
   }
 }

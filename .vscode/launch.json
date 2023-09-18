@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Severless local",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "yarn",
+      "args": ["local"],
+      "autoAttachChildProcesses": true,
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**"],
+      "console": "integratedTerminal"
+    },
+    // {
+    //   "name": "Severless dev",
+    //   "type": "node",
+    //   "request": "launch",
+    //   "runtimeExecutable": "yarn",
+    //   "args": ["run-script", "dev"],
+    //   "autoAttachChildProcesses": true,
+    //   "sourceMaps": true,
+    //   "skipFiles": ["<node_internals>/**"],
+    //   "console": "integratedTerminal"
+    // },
+  ]
+}

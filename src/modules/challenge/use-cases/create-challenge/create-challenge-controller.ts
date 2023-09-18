@@ -14,25 +14,23 @@ export class CreateChallengeController extends Controller {
 
   get requestSchema(): z.AnyZodObject {
     return z.object({
-      // body: z.object({
-      //   title: z.string().min(3).max(70),
-      //   description: z.string().max(2000),
-      //   tags: z.array(z.string().min(2).max(50)),
-      //   creatorId: z.string(),
-      // }),
+      body: z.object({
+        title: z.string().min(3).max(70),
+        description: z.string().max(2000),
+        tags: z.array(z.string().min(2).max(50)),
+      }),
     });
   }
 
   async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
-    // const { title, description, tags, creatorId } = httpRequest.body;
+    const { title, description, tags } = httpRequest.body;
 
-    // const res = await this.createChallengeUseCase.execute({
-    //   title,
-    //   description,
-    //   tags,
-    //   creatorId,
-    // });
+    await this.createChallengeUseCase.execute({
+      title,
+      description,
+      tags,
+    });
 
-    return created(httpRequest);
+    return created();
   }
 }

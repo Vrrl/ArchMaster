@@ -1,5 +1,8 @@
 import type { AWS } from '@serverless/typescript';
 import functions from '@infra/aws/functions';
+import iam from '@infra/aws/iam';
+import resources from '@infra/aws/resources';
+import environment from '@infra/aws/environment';
 
 const serverlessConfiguration: AWS = {
   service: 'ArchMaster',
@@ -7,17 +10,22 @@ const serverlessConfiguration: AWS = {
   plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs16.x',
+    deploymentMethod: 'direct',
+    versionFunctions: false,
+    timeout: 30,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+    httpApi: {
+      cors: true,
     },
+    environment,
+    iam,
   },
   functions,
+  resources,
   package: { individually: true },
   custom: {
     yarn: {
@@ -28,11 +36,12 @@ const serverlessConfiguration: AWS = {
       minify: false,
       sourcemap: true,
       exclude: ['aws-sdk'],
-      target: 'node14',
+      target: 'node16',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
     },
+    'serverless-offline': { noPrependStageInUrl: true },
   },
 };
 
