@@ -17,14 +17,16 @@ type CreateChallengeResponse = void;
 
 @injectable()
 export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, CreateChallengeResponse> {
-  constructor() {}
+  constructor(
+    @inject(TYPES.IChallengeCommandRepository) private readonly challengeCommandRepository: IChallengeCommandRepository,
+  ) {}
 
   async execute({ title, description, tags }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
     const cTitle = ChallengeTitle.create({ title });
     const cDescription = ChallengeDescription.create({ description });
     const cTags = tags.map(tag => Tag.create({ name: tag }));
 
-    new Challenge({
+    const newChallenge = new Challenge({
       title: cTitle,
       description: cDescription,
       tags: cTags,
@@ -32,5 +34,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
       verified: false,
       createdAt: new Date(),
     });
+
+    await this.challengeCommandRepository.save(newChallenge);
   }
 }
