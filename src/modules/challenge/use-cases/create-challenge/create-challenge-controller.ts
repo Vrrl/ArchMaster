@@ -5,6 +5,7 @@ import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { CreateChallengeUseCase } from './create-challenge';
 import TYPES from '@src/core/types';
+import { ChallengeDescription } from '../../domain/challenge-description';
 
 @injectable()
 export class CreateChallengeController extends Controller {
@@ -16,7 +17,7 @@ export class CreateChallengeController extends Controller {
     return z.object({
       body: z.object({
         title: z.string().min(3).max(70),
-        description: z.string().max(2000),
+        description: z.string().min(ChallengeDescription.minlength).max(ChallengeDescription.maxlength),
         tags: z.array(z.string().min(2).max(50)),
       }),
     });

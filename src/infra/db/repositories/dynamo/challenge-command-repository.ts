@@ -18,13 +18,18 @@ export class ChallengeCommandRepository implements IChallengeCommandRepository {
   }
 
   async save(challenge: Challenge): Promise<void> {
-    const tableName = process.env.CHALLENGES_TABLE;
+    const tableName = process.env.DYNAMO_CHALLENGES_TABLE;
 
     const mappedChallenge = ChallengeMap.toPersistence(challenge);
-    const putItemCommand = new PutItemCommand({ TableName: tableName, Item: marshall(mappedChallenge) });
+    const putItemCommand = new PutItemCommand({
+      TableName: tableName,
+      Item: marshall(mappedChallenge, {
+        convertClassInstanceToMap: true,
+        removeUndefinedValues: true,
+      }),
+    });
 
-    const response = await this.dynamoClient.send(putItemCommand);
-    console.log(response);
+    await this.dynamoClient.send(putItemCommand);
   }
 
   async update(challenge: Challenge): Promise<void> {

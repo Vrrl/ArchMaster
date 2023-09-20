@@ -1,19 +1,16 @@
 import { IMapper } from '@src/core/infra/mapper';
 import { Challenge } from '@src/modules/challenge/domain/challenge';
-import { ChallengeDescription } from '@src/modules/challenge/domain/challenge-description';
-import { ChallengeTitle } from '@src/modules/challenge/domain/challenge-title';
-import { Tag } from '@src/modules/challenge/domain/tag';
 
 export class ChallengeMap implements IMapper<Challenge> {
   public static toDomain(schema: any): Challenge {
-    const challenge = Challenge.create(
+    const challenge = Challenge.createFromPrimitive(
       {
-        title: ChallengeTitle.create({ title: schema.title }),
-        description: ChallengeDescription.create({ description: schema.description }),
-        tags: schema.tags.map((tag: any) => Tag.create({ name: tag })),
+        title: schema.title,
+        description: schema.description,
+        tags: schema.tags,
         creatorId: schema.creatorId,
         verified: schema.verified,
-        createdAt: schema.createdAt,
+        createdAt: new Date(schema.createdAt),
         deactivatedAt: schema.deactivatedAt,
         disabledAt: schema.disabledAt,
         editedAt: schema.editedAt,

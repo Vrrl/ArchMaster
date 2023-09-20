@@ -3,9 +3,6 @@ import { inject, injectable } from 'inversify';
 import { IUseCase } from '@src/core/use-case';
 import { IChallengeCommandRepository } from '@src/infra/db/repositories/challenge-command-repository';
 import { Challenge } from '../../domain/challenge';
-import { ChallengeDescription } from '../../domain/challenge-description';
-import { ChallengeTitle } from '../../domain/challenge-title';
-import { Tag } from '../../domain/tag';
 
 interface CreateChallengeRequest {
   title: string;
@@ -22,18 +19,7 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
   ) {}
 
   async execute({ title, description, tags }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
-    const cTitle = ChallengeTitle.create({ title });
-    const cDescription = ChallengeDescription.create({ description });
-    const cTags = tags.map(tag => Tag.create({ name: tag }));
-
-    const newChallenge = new Challenge({
-      title: cTitle,
-      description: cDescription,
-      tags: cTags,
-      creatorId: 'creatorId',
-      verified: false,
-      createdAt: new Date(),
-    });
+    const newChallenge = Challenge.createNew({ title, description, tags, creatorId: 'teste' });
 
     await this.challengeCommandRepository.save(newChallenge);
   }

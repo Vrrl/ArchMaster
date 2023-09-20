@@ -70,16 +70,47 @@ export class Challenge extends AggregateRoot<ChallengeProps> {
     this.props.deactivatedAt = undefined;
   }
 
-  public static createFromPrimitive(props: ChallengeProps, id?: string): Challenge {
-    const cTitle = ChallengeTitle.create({ title });
-    const cDescription = ChallengeDescription.create({ description });
-    const cTags = tags.map(tag => Tag.create({ name: tag }));
-
+  public static createFromPrimitive(
+    props: {
+      title: string;
+      description: string;
+      tags: string[];
+      creatorId: string;
+      verified: boolean;
+      createdAt: Date;
+      deactivatedAt?: string;
+      disabledAt?: string;
+      editedAt?: string;
+    },
+    id?: string,
+  ): Challenge {
     return new Challenge(
       {
-        title: cTitle,
-        description: cDescription,
-        tags: cTags,
+        title: ChallengeTitle.create({ title: props.title }),
+        description: ChallengeDescription.create({ description: props.description }),
+        tags: props.tags.map(tag => Tag.create({ name: tag })),
+        creatorId: props.creatorId,
+        verified: props.verified,
+        createdAt: props.createdAt,
+      },
+      id,
+    );
+  }
+
+  public static createNew(
+    props: {
+      title: string;
+      description: string;
+      tags: string[];
+      creatorId: string;
+    },
+    id?: string,
+  ): Challenge {
+    return Challenge.createFromPrimitive(
+      {
+        title: props.title,
+        description: props.description,
+        tags: props.tags,
         creatorId: 'creatorId',
         verified: false,
         createdAt: new Date(),
