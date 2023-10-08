@@ -8,6 +8,7 @@ interface CreateChallengeRequest {
   title: string;
   description: string;
   tags: string[];
+  creatorId: string;
 }
 
 type CreateChallengeResponse = void;
@@ -18,8 +19,8 @@ export class CreateChallengeUseCase implements IUseCase<CreateChallengeRequest, 
     @inject(TYPES.IChallengeCommandRepository) private readonly challengeCommandRepository: IChallengeCommandRepository,
   ) {}
 
-  async execute({ title, description, tags }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
-    const newChallenge = Challenge.createNew({ title, description, tags, creatorId: 'teste' });
+  async execute({ title, description, tags, creatorId }: CreateChallengeRequest): Promise<CreateChallengeResponse> {
+    const newChallenge = Challenge.createNew({ title, description, tags, creatorId });
 
     await this.challengeCommandRepository.save(newChallenge);
   }

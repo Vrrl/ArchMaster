@@ -16,14 +16,7 @@ export class LogInUseCase implements IUseCase<LogInRequest, LogInResponse> {
   constructor(@inject(TYPES.IAuthenticationService) private readonly authenticationService: IAuthenticationService) {}
 
   async execute({ username, password }: LogInRequest): Promise<LogInResponse> {
-    const { AuthenticationResult } = await this.authenticationService.logIn(username, password);
-
-    const oauthToken = {
-      accessToken: AuthenticationResult.AccessToken,
-      refreshToken: AuthenticationResult.RefreshToken,
-      expiresIn: AuthenticationResult.ExpiresIn,
-      type: AuthenticationResult.TokenType,
-    } as IOAuthToken;
+    const oauthToken = await this.authenticationService.logIn(username, password);
 
     return oauthToken;
   }

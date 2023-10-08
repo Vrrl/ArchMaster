@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { z } from 'zod';
-import { created } from '@src/core/infra/helpers/http-status';
+import * as httpStatus from '@src/core/infra/helpers/http-status';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { SignUpConfirmUseCase } from './sign-up-confirm';
@@ -32,6 +32,6 @@ export class SignUpConfirmController extends Controller {
       confirmationCode,
     });
 
-    return created();
+    return httpStatus.ok();
   }
 }

@@ -4,11 +4,15 @@ import TYPES from '@src/core/types';
 import {
   CognitoIdentityProvider,
   ConfirmSignUpCommandInput,
+  GetUserCommandInput,
+  GetUserResponse,
   InitiateAuthCommandInput,
   ResendConfirmationCodeCommandInput,
   SignUpCommandInput,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { throwIfUndefinedOrEmptyString } from '@src/core/infra/helpers/validation';
+import { throwIfNotBoolean, throwIfUndefinedOrEmptyString } from '@src/core/infra/helpers/validation';
+import { User } from '@src/modules/authentication/domain/user';
+import { IOAuthToken } from '@src/modules/authentication/dtos/oauth-token';
 
 @injectable()
 export class CognitoService implements IAuthenticationService {
@@ -25,7 +29,7 @@ export class CognitoService implements IAuthenticationService {
     }
   }
 
-  async signUp(email: string, username: string, password: string): Promise<void> {
+  async signUp(email: string, username: string, password: string, internalId: string): Promise<void> {
     const params = {
       UserPoolId: this.USER_POOL_ID,
       ClientId: this.CLIENT_ID,
@@ -39,6 +43,10 @@ export class CognitoService implements IAuthenticationService {
         {
           Name: 'nickname',
           Value: username,
+        },
+        {
+          Name: 'custom:internalId',
+          Value: internalId,
         },
       ],
     } as SignUpCommandInput;
@@ -67,7 +75,7 @@ export class CognitoService implements IAuthenticationService {
     await this.cognitoIdentityProvider.resendConfirmationCode(params);
   }
 
-  async logIn(username: string, password: string): Promise<any> {
+  async logIn(username: string, password: string): Promise<IOAuthToken> {
     const params = {
       UserPoolId: this.USER_POOL_ID,
       ClientId: this.CLIENT_ID,
@@ -78,17 +86,45 @@ export class CognitoService implements IAuthenticationService {
       },
     } as InitiateAuthCommandInput;
 
-    return this.cognitoIdentityProvider.initiateAuth(params);
+    const { AuthenticationResult } = await this.cognitoIdentityProvider.initiateAuth(params);
+
+    if (!AuthenticationResult) throw new Error('AuthenticationResult is null. TODO: improve this error type');
+
+    const oauthToken = {
+      accessToken: AuthenticationResult.AccessToken,
+      refreshToken: AuthenticationResult.RefreshToken,
+      expiresIn: AuthenticationResult.ExpiresIn,
+      type: AuthenticationResult.TokenType,
+    } as IOAuthToken;
+
+    return oauthToken;
   }
 
-  async getUser(id: string): Promise<any> {
-    if (!id) return null;
+  async getUserByToken(token: string): Promise<User | undefined> {
+    if (!token) return undefined;
 
-    const params = {
-      UserPoolId: this.USER_POOL_ID,
-      Username: id,
-    };
+    const [tokenType, accessToken] = token.split(' ');
 
-    return this.cognitoIdentityProvider.adminGetUser(params);
+    if (tokenType === 'Bearer') {
+      const params = {
+        AccessToken: accessToken,
+      } as GetUserCommandInput;
+
+      const res = await this.cognitoIdentityProvider.getUser(params);
+
+      return this.mapFromProvider(res);
+    }
+  }
+
+  private mapFromProvider(userResponse: GetUserResponse): User {
+    return new User(
+      {
+        email: throwIfUndefinedOrEmptyString(userResponse.UserAttributes?.find(x => x.Name === 'email')?.Value),
+        emailVerified: throwIfNotBoolean(userResponse.UserAttributes?.find(x => x.Name === 'email_verified')?.Value),
+        username: throwIfUndefinedOrEmptyString(userResponse.Username),
+        externalId: throwIfUndefinedOrEmptyString(userResponse.UserAttributes?.find(x => x.Name === 'sub')?.Value),
+      },
+      throwIfUndefinedOrEmptyString(userResponse.UserAttributes?.find(x => x.Name === 'custom:internalId')?.Value),
+    );
   }
 }

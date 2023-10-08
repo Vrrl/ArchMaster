@@ -111,7 +111,7 @@ export class Challenge extends AggregateRoot<ChallengeProps> {
         title: props.title,
         description: props.description,
         tags: props.tags,
-        creatorId: 'creatorId',
+        creatorId: props.creatorId,
         verified: false,
         createdAt: new Date(),
       },

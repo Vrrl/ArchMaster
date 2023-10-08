@@ -7,32 +7,46 @@ import { AuthenticationLevel } from './authentication/authentication-level';
 import TYPES from '../types';
 import { IAuthenticationService } from '@src/infra/authentication/services/authentication-service';
 import container from '../injector';
+import { User } from '@src/modules/authentication/domain/user';
+
+export type ControllerContext = { user?: User };
 
 @injectable()
 export abstract class Controller {
-  constructor() {
-    this.authenticationService = container.get<IAuthenticationService>(TYPES.IAuthenticationService);
-  }
-
   protected authenticationService: IAuthenticationService;
 
   authenticationLevels?: AuthenticationLevel[];
 
+  hasAuthentication: boolean;
+
+  constructor() {
+    this.authenticationService = container.get<IAuthenticationService>(TYPES.IAuthenticationService);
+
+    if (this.authenticationLevels?.length) {
+      this.hasAuthentication = true;
+    }
+  }
+
   abstract get requestSchema(): z.AnyZodObject;
-  abstract perform(httpRequest: HttpRequest): Promise<HttpResponse>;
+  abstract perform(httpRequest: HttpRequest, context?: ControllerContext): Promise<HttpResponse>;
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      // if (this.authenticationLevels?.length) {
-      //   const user = await this.authenticationService.getUser('teste2');
-      //   if (!user) return httpStatus.Unauthorized();
-      // }
+      const context: ControllerContext = {};
+
+      if (this.authenticationLevels?.length) {
+        const user = await this.authenticationService.getUserByToken(httpRequest.headers?.authorization);
+        if (!user) return httpStatus.Unauthorized();
+        context.user = user;
+      }
+
       if (this.requestSchema) {
         const validator = await this.requestSchema.safeParseAsync(httpRequest);
 
         if (!validator.success) return httpStatus.badRequest(validator.error.issues);
       }
-      return await this.perform(httpRequest);
+
+      return await this.perform(httpRequest, context);
     } catch (error) {
       if (error instanceof HttpException) {
         return {

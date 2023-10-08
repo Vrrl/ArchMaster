@@ -19,7 +19,7 @@
     "noImplicitThis": true,
     "resolveJsonModule": true,
     "alwaysStrict": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "composite": true,

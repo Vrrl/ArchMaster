@@ -2,11 +2,12 @@ import { inject, injectable } from 'inversify';
 import { z } from 'zod';
 import { created } from '@src/core/infra/helpers/http-status';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
-import { Controller } from '@core/infra/controller';
+import { Controller, ControllerContext } from '@core/infra/controller';
 import { CreateChallengeUseCase } from './create-challenge';
 import TYPES from '@src/core/types';
 import { ChallengeDescription } from '../../domain/challenge-description';
 import { AuthenticationLevel } from '@src/core/infra/authentication/authentication-level';
+import { User } from '@src/modules/authentication/domain/user';
 
 @injectable()
 export class CreateChallengeController extends Controller {
@@ -26,13 +27,16 @@ export class CreateChallengeController extends Controller {
     });
   }
 
-  async perform(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async perform(httpRequest: HttpRequest, context: ControllerContext): Promise<HttpResponse> {
     const { title, description, tags } = httpRequest.body;
+
+    const user = context.user as User;
 
     await this.createChallengeUseCase.execute({
       title,
       description,
       tags,
+      creatorId: user.id,
     });
 
     return created();
