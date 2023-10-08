@@ -1,10 +1,12 @@
-import { ok } from '@core/infra/helpers/http';
+import { ok } from '@src/core/infra/helpers/http-status';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { z } from 'zod';
 import { ListChallengesUseCase } from './list-challenges';
+import { AuthenticationLevel } from '@src/core/infra/authentication/authentication-level';
 
 export class ListChallengesController extends Controller {
+  authenticationLevels?: AuthenticationLevel[] | undefined;
   constructor(private readonly listChallengeUseCase: ListChallengesUseCase) {
     super();
   }

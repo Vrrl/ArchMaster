@@ -13,6 +13,7 @@
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.427.0",
     "@aws-sdk/client-dynamodb": "^3.414.0",
     "@aws-sdk/util-dynamodb": "^3.415.0",
     "@middy/core": "^3.4.0",

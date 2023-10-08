@@ -22,6 +22,26 @@ const resources: AWS['resources'] = {
         TableName: '${self:provider.environment.DYNAMO_CHALLENGES_TABLE}',
       },
     },
+    CognitoUserPool: {
+      Type: 'AWS::Cognito::UserPool',
+      DeletionPolicy: 'Retain',
+      Properties: {
+        AttributeDefinitions: [
+          {
+            AttributeName: 'id',
+            AttributeType: 'S',
+          },
+        ],
+        KeySchema: [
+          {
+            AttributeName: 'id',
+            KeyType: 'HASH',
+          },
+        ],
+        BillingMode: 'PAY_PER_REQUEST',
+        TableName: '${self:provider.environment.DYNAMO_CHALLENGES_TABLE}',
+      },
+    },
   },
 };
 

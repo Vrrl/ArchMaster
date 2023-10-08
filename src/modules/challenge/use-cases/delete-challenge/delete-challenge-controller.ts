@@ -1,10 +1,12 @@
-import { ok } from '@core/infra/helpers/http';
+import { ok } from '@src/core/infra/helpers/http-status';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { z } from 'zod';
 import { DeleteChallengeUseCase } from './delete-challenge';
+import { AuthenticationLevel } from '@src/core/infra/authentication/authentication-level';
 
 export class DeleteChallengeController extends Controller {
+  authenticationLevels?: AuthenticationLevel[] | undefined;
   constructor(private readonly deleteChallengeUseCase: DeleteChallengeUseCase) {
     super();
   }

@@ -1,17 +1,20 @@
 import { inject, injectable } from 'inversify';
 import { z } from 'zod';
-import { created } from '@core/infra/helpers/http';
+import { created } from '@src/core/infra/helpers/http-status';
 import { HttpRequest, HttpResponse } from '@core/infra/http';
 import { Controller } from '@core/infra/controller';
 import { CreateChallengeUseCase } from './create-challenge';
 import TYPES from '@src/core/types';
 import { ChallengeDescription } from '../../domain/challenge-description';
+import { AuthenticationLevel } from '@src/core/infra/authentication/authentication-level';
 
 @injectable()
 export class CreateChallengeController extends Controller {
   constructor(@inject(TYPES.CreateChallengeUseCase) private readonly createChallengeUseCase: CreateChallengeUseCase) {
     super();
   }
+
+  authenticationLevels: AuthenticationLevel[] = [AuthenticationLevel.basicUser];
 
   get requestSchema(): z.AnyZodObject {
     return z.object({

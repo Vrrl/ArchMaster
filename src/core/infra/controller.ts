@@ -1,27 +1,37 @@
 import { HttpRequest, HttpResponse } from '@core/infra/http';
-import { badRequest, serverError } from './helpers/http';
+import * as httpStatus from './helpers/http-status';
 import { HttpException } from '@src/core/infra/errors/http';
 import { z } from 'zod';
-import { injectable } from 'inversify';
-export abstract class ControllerFactory {
-  constructor() {}
-
-  abstract makeController(): Controller;
-}
+import { injectable, inject } from 'inversify';
+import { AuthenticationLevel } from './authentication/authentication-level';
+import TYPES from '../types';
+import { IAuthenticationService } from '@src/infra/authentication/services/authentication-service';
+import container from '../injector';
 
 @injectable()
 export abstract class Controller {
-  constructor() {}
+  constructor() {
+    this.authenticationService = container.get<IAuthenticationService>(TYPES.IAuthenticationService);
+  }
+
+  protected authenticationService: IAuthenticationService;
+
+  authenticationLevels?: AuthenticationLevel[];
 
   abstract get requestSchema(): z.AnyZodObject;
   abstract perform(httpRequest: HttpRequest): Promise<HttpResponse>;
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      if (this.authenticationLevels?.length) {
+        debugger;
+        const user = await this.authenticationService.getUser('teste2');
+        if (!user) return httpStatus.Unauthorized();
+      }
       if (this.requestSchema) {
         const validator = await this.requestSchema.safeParseAsync(httpRequest);
 
-        if (!validator.success) return badRequest(validator.error.issues);
+        if (!validator.success) return httpStatus.badRequest(validator.error.issues);
       }
       return await this.perform(httpRequest);
     } catch (error) {
@@ -33,7 +43,7 @@ export abstract class Controller {
       }
 
       console.log(error);
-      return serverError();
+      return httpStatus.serverError();
     }
   }
 }

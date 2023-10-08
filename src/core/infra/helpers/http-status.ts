@@ -1,6 +1,6 @@
 import { HttpResponse } from '../http';
 
-export const ok = (body: any, headers: object = {}): HttpResponse => {
+export const ok = (body?: any, headers: object = {}): HttpResponse => {
   return {
     statusCode: 200,
     body,
