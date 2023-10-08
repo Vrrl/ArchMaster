@@ -1,7 +1,13 @@
 import { inject, injectable } from 'inversify';
 import { IAuthenticationService } from '../authentication-service';
 import TYPES from '@src/core/types';
-import { CognitoIdentityProvider, ConfirmSignUpCommandInput, ResendConfirmationCodeCommandInput, SignUpCommandInput } from '@aws-sdk/client-cognito-identity-provider';
+import {
+  CognitoIdentityProvider,
+  ConfirmSignUpCommandInput,
+  InitiateAuthCommandInput,
+  ResendConfirmationCodeCommandInput,
+  SignUpCommandInput,
+} from '@aws-sdk/client-cognito-identity-provider';
 import { throwIfUndefinedOrEmptyString } from '@src/core/infra/helpers/validation';
 
 @injectable()
@@ -59,6 +65,20 @@ export class CognitoService implements IAuthenticationService {
     } as ResendConfirmationCodeCommandInput;
 
     await this.cognitoIdentityProvider.resendConfirmationCode(params);
+  }
+
+  async logIn(username: string, password: string): Promise<any> {
+    const params = {
+      UserPoolId: this.USER_POOL_ID,
+      ClientId: this.CLIENT_ID,
+      AuthFlow: 'USER_PASSWORD_AUTH',
+      AuthParameters: {
+        USERNAME: username,
+        PASSWORD: password,
+      },
+    } as InitiateAuthCommandInput;
+
+    return this.cognitoIdentityProvider.initiateAuth(params);
   }
 
   async getUser(id: string): Promise<any> {

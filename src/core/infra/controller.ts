@@ -23,11 +23,10 @@ export abstract class Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      if (this.authenticationLevels?.length) {
-        debugger;
-        const user = await this.authenticationService.getUser('teste2');
-        if (!user) return httpStatus.Unauthorized();
-      }
+      // if (this.authenticationLevels?.length) {
+      //   const user = await this.authenticationService.getUser('teste2');
+      //   if (!user) return httpStatus.Unauthorized();
+      // }
       if (this.requestSchema) {
         const validator = await this.requestSchema.safeParseAsync(httpRequest);
 

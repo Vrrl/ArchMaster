@@ -12,6 +12,7 @@ import { CognitoService } from '@src/infra/authentication/services/cognito/cogni
 import { SignUpUseCase } from '@src/modules/authentication/use-cases/sign-up/sign-up';
 import { SignUpConfirmUseCase } from '@src/modules/authentication/use-cases/sign-up-confirm/sign-up-confirm';
 import { SignUpResendVerificationCodeUseCase } from '@src/modules/authentication/use-cases/sign-up-resend-verification-code/sign-up-resend-verification-code';
+import { LogInUseCase } from '@src/modules/authentication/use-cases/log-in/log-in';
 
 const container = new Container();
 
@@ -34,6 +35,7 @@ container.bind<SignUpConfirmUseCase>(TYPES.SignUpConfirmUseCase).to(SignUpConfir
 container
   .bind<SignUpResendVerificationCodeUseCase>(TYPES.SignUpResendVerificationCodeUseCase)
   .to(SignUpResendVerificationCodeUseCase);
+container.bind<LogInUseCase>(TYPES.LogInUseCase).to(LogInUseCase);
 
 container.bind<CreateChallengeUseCase>(TYPES.CreateChallengeUseCase).to(CreateChallengeUseCase);
 

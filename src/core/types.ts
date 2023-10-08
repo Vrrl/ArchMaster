@@ -10,6 +10,7 @@ const TYPES = {
   SignUpUseCase: Symbol.for('SignUpUseCase'),
   SignUpConfirmUseCase: Symbol.for('SignUpConfirmUseCase'),
   SignUpResendVerificationCodeUseCase: Symbol.for('SignUpResendVerificationCodeUseCase'),
+  LogInUseCase: Symbol.for('LogInUseCase'),
   CreateChallengeUseCase: Symbol.for('CreateChallengeUseCase'),
 };
 
