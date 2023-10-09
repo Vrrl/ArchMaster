@@ -1,8 +1,8 @@
 import type { AWS } from '@serverless/typescript';
-import functions from '@infra/aws/functions';
-import iam from '@infra/aws/iam';
-import resources from '@infra/aws/resources';
-import * as environment from '@infra/aws/provider-environment';
+import functions from '@infra/serverless/functions';
+import iam from '@infra/serverless/iam';
+import resources from '@infra/serverless/resources';
+import * as environment from '@infra/serverless/provider-environment';
 
 const serverlessConfiguration: AWS = {
   service: 'ArchMaster',
